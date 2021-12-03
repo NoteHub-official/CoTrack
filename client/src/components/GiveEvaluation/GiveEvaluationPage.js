@@ -39,6 +39,18 @@ const GiveEvaluationPage = () => {
       role: "What the heck",
       image: "https://i.pravatar.cc/120?img=5",
     },
+    {
+      name: "其德隆东a",
+      date: "2021-01-01",
+      role: "What the heck",
+      image: "https://i.pravatar.cc/120?img=5",
+    },
+    {
+      name: "其德隆东b",
+      date: "2021-01-01",
+      role: "What the heck",
+      image: "https://i.pravatar.cc/120?img=5",
+    },
   ];
 
   const [value, setValue] = React.useState(0);
@@ -49,7 +61,7 @@ const GiveEvaluationPage = () => {
   return (
     <Box>
       <Grid container justifyContent="flex-start" component={Box}>
-        <Grid item>
+        <Grid item xs={3}>
           <Grid
             container
             direction="column"
@@ -73,7 +85,7 @@ const GiveEvaluationPage = () => {
           </Grid>
         </Grid>
         <Divider orientation="vertical" variant="middle" flexItem />
-        <Grid item>
+        <Grid xs item>
           <EvaluationForm />
         </Grid>
       </Grid>
