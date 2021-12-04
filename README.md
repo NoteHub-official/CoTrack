@@ -193,8 +193,8 @@ Request Format:
 
 ```json
 {
-    "id": 1,
-    "content": "Modified task Item"
+    "content": "Modified task Item",  // Optional
+    "completed": false								// Optional
 }
 ```
 
@@ -203,7 +203,8 @@ Response Format:
 ```json
 {
     "id": 1,
-    "content": "Modified task Item"
+    "content": "Modified task Item",
+  	"completed": false	
 }
 ```
 

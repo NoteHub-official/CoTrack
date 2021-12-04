@@ -13,6 +13,7 @@ class TaskList(models.Model):
 class TaskItem(models.Model):
     task_list = models.ForeignKey(TaskList, on_delete=models.CASCADE, related_name="tasks")
     content = models.CharField(max_length=512, default="")
+    completed = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

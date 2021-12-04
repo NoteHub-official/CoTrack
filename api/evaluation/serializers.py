@@ -14,7 +14,7 @@ class TaskItemSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = TaskItem
-        fields = ('id', 'content')
+        fields = ('id', 'content', 'completed')
 
 
 class AddTaskItemSerializer(serializers.ModelSerializer):
