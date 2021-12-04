@@ -29,6 +29,3 @@ class Evaluation(models.Model):
     week = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(52)], default=1)
     completed = models.BooleanField(default=False)
     task_list = models.ForeignKey(TaskList, on_delete=models.CASCADE, related_name="evaluations", null=True)
-
-
-
