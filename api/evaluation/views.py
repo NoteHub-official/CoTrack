@@ -1,8 +1,8 @@
 from rest_framework import viewsets
 
-from .serializers import UserSerializer, EvaluationSerializer, AddEvaluationSerializer
+from .serializers import UserSerializer, EvaluationSerializer, AddEvaluationSerializer, TaskListSerializer, TaskItemSerializer, AddTaskItemSerializer, UpdateEvaluationSerializer, MyEvaluationSerializer
 from core.models import User
-from .models import Evaluation
+from .models import Evaluation, TaskList, TaskItem
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -17,27 +17,55 @@ class AssignedEvaluationViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows evaluations to be viewed or edited.
     """
-    serializer_class = EvaluationSerializer
 
     def get_serializer_context(self):
-        return {'request': self.request}
+        return {'request': self.request, 'id': self.kwargs.get('pk', None)}
 
     def get_queryset(self):
         user = self.request.user
-        return Evaluation.objects.filter(evaluator=user, created_at__gt=start_of_week(), completed=False)
+        # get week kwargs from request
+        week = self.request.query_params.get('week', None)
+        if week is None:
+            return Evaluation.objects.none()
+        return Evaluation.objects.select_related('evaluated_user', 'task_list').prefetch_related('task_list__tasks').filter(evaluator=user, week=week)
 
     def get_serializer_class(self):
         if self.request.method == 'GET':
             return EvaluationSerializer
         elif self.request.method == 'POST':
             return AddEvaluationSerializer
-        return AddEvaluationSerializer
+        elif self.request.method == 'PATCH':
+            return UpdateEvaluationSerializer
+        return EvaluationSerializer
 
 
-def start_of_week():
+class TaskItemViewSet(viewsets.ModelViewSet):
     """
-    Returns the starting date of the current week.
+    API endpoint that allows task items to be viewed or edited
     """
-    from datetime import datetime, timedelta
-    today = datetime.today()
-    return today - timedelta(days=today.weekday())
+    queryset = TaskItem.objects.all()
+
+    def get_serializer_context(self):
+        return {'request': self.request}
+
+    def get_serializer_class(self):
+        if self.request.method == 'GET':
+            return TaskItemSerializer
+        elif self.request.method == 'POST':
+            return AddTaskItemSerializer
+        return TaskItemSerializer
+
+
+class ReceivedEvaluationViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows evaluations to be viewed or edited (only GET).
+    """
+    serializer_class = MyEvaluationSerializer
+
+    def get_serializer_context(self):
+        return {'request': self.request}
+
+    def get_queryset(self):
+        user = self.request.user
+        return Evaluation.objects.select_related('evaluated_user', 'task_list').prefetch_related('task_list__tasks').filter(evaluated_user=user)
+
