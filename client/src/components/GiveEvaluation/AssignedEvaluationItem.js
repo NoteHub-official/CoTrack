@@ -18,15 +18,15 @@ const Img = styled("img")({
 
 const useStyles = makeStyles((theme) => ({
   typography: {
-    minWidth: "12em",
-    maxWidth: "12em",
+    minWidth: "8em",
+    maxWidth: "8em",
     minHeight: "2em",
     maxHeight: "2em",
   },
   button: {
     color: theme.palette.primary.main,
     fontFamily: "Arial",
-    fontSize: "1rem",
+    fontSize: "0.8em",
     fontWeight: "bold",
   },
 }));
@@ -35,45 +35,49 @@ export default function AssignedEvaluationItem(props) {
   const { name, date, role, image, handleClick } = props;
   const classes = useStyles();
   return (
-    <Paper sx={{ p: 2, margin: "auto", maxWidth: 500, flexGrow: 1 }}>
-      <Grid container spacing={2}>
+    <Paper
+      sx={{ p: 2, margin: "auto", maxWidth: 500, flexGrow: 1 }}
+      elevation={0}
+    >
+      <Grid container spacing={2} direction="row" justifyContent="center">
         <Grid item>
-          <Img alt="complex" src={image} />
+          <Img alt="complex" src={image} sx={{ borderRadius: 50, width: 80 }} />
         </Grid>
         <Grid item xs={12} sm container>
-          <Grid item xs container direction="column" spacing={2}>
-            <Grid item xs>
-              <Typography
-                gutterBottom
-                variant="subtitle1"
-                component="div"
-                className={classes.typography}
-              >
-                {name}
-              </Typography>
-              <Typography
-                variant="body2"
-                gutterBottom
-                component="div"
-                minWidth="12em"
-                maxWidth="12em"
-                minHeight="4em"
-                maxHeight="4em"
-              >
+          <Grid item xs>
+            <Grid item container xs>
+              <Grid item>
+                <Typography
+                  gutterBottom
+                  variant="subtitle1"
+                  className={classes.typography}
+                >
+                  {name}
+                </Typography>
+              </Grid>
+            </Grid>
+            <Grid item container>
+              <Typography variant="body2" gutterBottom>
                 {date}
               </Typography>
+            </Grid>
+            <Grid item container>
               <Typography variant="body2" color="text.secondary">
                 {role}
               </Typography>
             </Grid>
           </Grid>
-          <Grid item xs={12} sm container>
-            <Grid container direction="column" spacing={2}>
+          <Grid item>
+            <Grid
+              container
+              justifyContent="space-between"
+              direction="column"
+              sx={{ height: "100%" }}
+            >
               <Grid item>
                 <Typography
                   gutterBottom
                   variant="subtitle1"
-                  component="div"
                   color="green"
                   align="center"
                 >
@@ -81,10 +85,13 @@ export default function AssignedEvaluationItem(props) {
                 </Typography>
               </Grid>
               <Grid item>
-                <Spacer />
-              </Grid>
-              <Grid item>
-                <Button className={classes.button} onClick={handleClick}>
+                <Button
+                  className={classes.button}
+                  onClick={handleClick}
+                  variant="outlined"
+                  color="primary"
+                  size="small"
+                >
                   Evaluate
                 </Button>
               </Grid>

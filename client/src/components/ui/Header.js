@@ -27,16 +27,6 @@ function ElevationScroll(props) {
 }
 
 const useStyles = makeStyles((theme) => ({
-  toolbarMargin: {
-    ...theme.mixins.toolbar,
-    marginBottom: "1em",
-    [theme.breakpoints.down("md")]: {
-      marginBottom: "2em",
-    },
-    [theme.breakpoints.down("xs")]: {
-      marginBottom: "1.25em",
-    },
-  },
   button: {
     marginRight: "1rem",
   },
@@ -70,7 +60,7 @@ const Header = (props) => {
 
   const tabs = (
     <React.Fragment>
-      <Tabs value={value} onChange={handleChange} indicatorColor="primary">
+      <Tabs value={value} onChange={handleChange} indicatorColor="secondary">
         {routes.map((route, index) => (
           <Tab
             key={`${route}${index}`}
@@ -107,7 +97,7 @@ const Header = (props) => {
           </Toolbar>
         </AppBar>
       </ElevationScroll>
-      <div className={classes.toolbarMargin} />
+      <Toolbar />
     </React.Fragment>
   );
 };
