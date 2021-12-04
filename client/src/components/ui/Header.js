@@ -97,7 +97,7 @@ const Header = (props) => {
           </Toolbar>
         </AppBar>
       </ElevationScroll>
-      <Toolbar />
+      <Toolbar sx={{ height: 64 }} />
     </React.Fragment>
   );
 };

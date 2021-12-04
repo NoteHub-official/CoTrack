@@ -12,6 +12,8 @@ import ListItemButton from "@mui/material/ListItemButton";
 import TextField from "@mui/material/TextField";
 import TodoMenu from "./TodoMenu";
 import ClickAwayListener from "@mui/material/ClickAwayListener";
+import Button from "@mui/material/Button";
+import Grid from "@mui/material/Grid";
 
 const TodoItem = ({ todo, handleOnComplete, handleOnUpdate, readOnly }) => {
   const { task, completed, secondary, index } = todo;
@@ -56,7 +58,7 @@ const TodoItem = ({ todo, handleOnComplete, handleOnUpdate, readOnly }) => {
   const buttonColor = determineColor();
 
   return (
-    <Box sx={{ width: "20rem", height: "auto" }}>
+    <Grid sx={{ width: "100%", height: "auto" }}>
       <ListItem
         secondaryAction={
           readOnly ? null : (
@@ -72,31 +74,49 @@ const TodoItem = ({ todo, handleOnComplete, handleOnUpdate, readOnly }) => {
           </IconButton>
         </ListItemIcon>
         {edit === 1 && (
-          <Box>
+          <Grid
+            sx={{
+              maxWidth: "100%",
+            }}
+            item
+            flexGrow={1}
+          >
             <TextField
+              fullWidth
               id="filled-basic"
               label="Task"
               variant="filled"
               defaultValue={task}
               onKeyDown={keyPressTask}
             />
-          </Box>
+          </Grid>
         )}
         {edit === 2 && (
-          <Box>
+          <Grid
+            sx={{
+              maxWidth: "100%",
+            }}
+            item
+            flexGrow={1}
+          >
             <TextField
+              fullWidth
               id="filled-basic"
               label="Note"
               variant="filled"
               defaultValue={secondary}
               onKeyDown={keyPressNote}
             />
-          </Box>
+          </Grid>
         )}
         {edit === 0 && (
           <ClickAwayListener onClickAway={handleClickAway}>
-            <ListItemButton onClick={readOnly ? null : clickHandler}>
+            <ListItemButton
+              onClick={readOnly ? null : clickHandler}
+              sx={{ maxWidth: "100%" }}
+            >
               <ListItemText
+                component={Button}
                 primary={task}
                 secondary={secondary && !readOnly ? secondary : null}
               />
@@ -110,8 +130,8 @@ const TodoItem = ({ todo, handleOnComplete, handleOnUpdate, readOnly }) => {
           handleClose={handleClickAway}
         />
       </ListItem>
-      <Divider variant="middle" />
-    </Box>
+      <Divider />
+    </Grid>
   );
 };
 

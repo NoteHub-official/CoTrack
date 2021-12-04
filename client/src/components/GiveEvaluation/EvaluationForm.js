@@ -8,10 +8,17 @@ import Box from "@mui/material/Box";
 import ThumbUpOffAltIcon from "@mui/icons-material/ThumbUpOffAlt";
 import ThumbDownOffAltIcon from "@mui/icons-material/ThumbDownOffAlt";
 import TodoList from "../Todo/TodoList";
+import Paper from "@mui/material/Paper";
+import Divider from "@mui/material/Divider";
+
 const EvaluationForm = (props) => {
   const name = "Kuke";
   const tasks = [
-    { task: "Learn React", completed: true, secondary: "2 days left" },
+    {
+      task: "Learn ReactReactReactReactReactReactReactReact",
+      completed: true,
+      secondary: "2 days left",
+    },
     { task: "Learn Redux", completed: false, secondary: "Redux is awesome" },
     { task: "Learn GraphQL", completed: false },
   ];
@@ -22,10 +29,10 @@ const EvaluationForm = (props) => {
         direction="column"
         spacing={3}
         alignItems="center"
+        justifyContent="center"
         sx={{ width: "100%" }}
-        style={{ maxHeight: "100vh" }}
       >
-        <Grid item>
+        <Grid item sx={{ minWidth: 500 }}>
           <ThumbUpOffAltIcon
             color="primary"
             sx={{ height: "70px", width: "70px" }}
@@ -34,12 +41,29 @@ const EvaluationForm = (props) => {
             color="secondary"
             sx={{ height: "70px", width: "70px" }}
           />
-          <Typography variant="h5" gutterBottom align="left">
-            This week, {name} worked on following tasks:
-          </Typography>
-          <Box sx={{ mb: "20px" }}>
-            <TodoList readOnly />
-          </Box>
+          <Paper elevation={3} sx={{ width: "100%" }}>
+            <Typography
+              component="div"
+              align="left"
+              sx={{ padding: 2, fontSize: "1.2em" }}
+            >
+              This week, {name} worked on following tasks:
+            </Typography>
+            <Divider />
+
+            <Grid
+              container
+              width="100%"
+              height="100%"
+              spacing={0}
+              alignItems="center"
+              justifyContent="center"
+            >
+              <Grid item>
+                <TodoList readOnly />
+              </Grid>
+            </Grid>
+          </Paper>
           <Typography variant="h5" gutterBottom align="left">
             Do you like to work with {name} ?
           </Typography>
@@ -72,7 +96,6 @@ const EvaluationForm = (props) => {
             </Button>
           </Box>
         </Grid>
-        <Grid item></Grid>
       </Grid>
     </React.Fragment>
   );

@@ -4,7 +4,7 @@ import Grid from "@mui/material/Grid";
 import Divider from "@mui/material/Divider";
 import List from "@mui/material/List";
 import { makeStyles } from "@material-ui/core/styles";
-
+import Hidden from "@mui/material/Hidden";
 import EvaluationForm from "./EvaluationForm";
 import AssignedEvaluationItem from "./AssignedEvaluationItem";
 
@@ -74,28 +74,30 @@ const GiveEvaluationPage = () => {
       container
       direction="row"
       style={{ maxHeight: "100vh" }}
-      alignItems="center"
+      alignItems="flex-start"
     >
-      <Grid item justifyContent="flex-start" style={{ maxHeight: "100vh" }}>
-        <List
-          sx={{ overflow: "auto", maxHeight: "89vh", paddintg: 0, margin: 0 }}
-        >
-          {receivedEvaluations.map((evaluation, index) => (
-            <Grid item key={index}>
-              <AssignedEvaluationItem
-                name={evaluation.name}
-                date={evaluation.date}
-                role={evaluation.role}
-                image={evaluation.image}
-                handleClick={handleClick}
-              />
-              <Divider />
-            </Grid>
-          ))}
-        </List>
-      </Grid>
-      <Divider orientation="vertical" variant="middle" flexItem />
-      <Grid item flexGrow={1}>
+      <Hidden lgDown>
+        <Grid item justifyContent="flex-start" style={{ maxHeight: "100vh" }}>
+          <List
+            sx={{ overflow: "auto", maxHeight: "89vh", paddintg: 0, margin: 0 }}
+          >
+            {receivedEvaluations.map((evaluation, index) => (
+              <Grid item key={index}>
+                <AssignedEvaluationItem
+                  name={evaluation.name}
+                  date={evaluation.date}
+                  role={evaluation.role}
+                  image={evaluation.image}
+                  handleClick={handleClick}
+                />
+                <Divider />
+              </Grid>
+            ))}
+          </List>
+        </Grid>
+        <Divider orientation="vertical" variant="middle" flexItem />
+      </Hidden>
+      <Grid item flexGrow={1} style={{ maxHeight: "100%" }}>
         <EvaluationForm />
       </Grid>
     </Grid>

@@ -36,7 +36,7 @@ export default function AssignedEvaluationItem(props) {
   const classes = useStyles();
   return (
     <Paper
-      sx={{ p: 2, margin: "auto", maxWidth: 500, flexGrow: 1 }}
+      sx={{ p: 2, maxWidth: 500, flexGrow: 1 }}
       elevation={0}
     >
       <Grid container spacing={2} direction="row" justifyContent="center">
