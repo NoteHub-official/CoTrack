@@ -2,14 +2,20 @@ from rest_framework import serializers
 from core.models import User
 from .models import Evaluation, TaskList, TaskItem
 
-
+"""
+User serializer
+"""
 class UserSerializer(serializers.ModelSerializer):
+
     class Meta:
         model = User
         fields = ('id', 'username', 'email', 'password')
         extra_kwargs = {'password': {'write_only': True}}
 
 
+"""
+Task Item serializer
+"""
 class TaskItemSerializer(serializers.ModelSerializer):
 
     class Meta:
@@ -24,6 +30,9 @@ class AddTaskItemSerializer(serializers.ModelSerializer):
         fields = ('task_list', 'content')
 
 
+"""
+Task List serializer
+"""
 class TaskListSerializer(serializers.ModelSerializer):
     tasks = TaskItemSerializer(many=True, read_only=True)
 
@@ -32,10 +41,10 @@ class TaskListSerializer(serializers.ModelSerializer):
         fields = ('id', 'week', 'created_at', 'tasks')
 
 
+"""
+Evaluation serializer
+"""
 class EvaluationSerializer(serializers.ModelSerializer):
-    """
-    Serializer for Evaluation objects.
-    """
     evaluated_user = UserSerializer()
     task_list = TaskListSerializer()
 
@@ -45,14 +54,10 @@ class EvaluationSerializer(serializers.ModelSerializer):
 
 
 class AddEvaluationSerializer(serializers.ModelSerializer):
-    """
-    Serializer for AddEvaluation objects.
-    """
 
     class Meta:
         model = Evaluation
         fields = ('id', 'week', 'content', 'evaluated_user', 'created_at')
-
 
     def save(self):
         request = self.context.get('request')
@@ -61,8 +66,8 @@ class AddEvaluationSerializer(serializers.ModelSerializer):
             evaluator = request.user
             week = self.validated_data.get('week')
             evaluated_user = self.validated_data.get('evaluated_user')
-            # automatically create a new task_list
-            task_list = TaskList.objects.create(user=evaluated_user, week=week)
+            # get or create a new task_list
+            task_list = TaskList.objects.get_or_create(user=evaluated_user, week=week)[0]
             evaluation = Evaluation.objects.create(
                 week=week,
                 content=content,
@@ -79,15 +84,11 @@ class AddEvaluationSerializer(serializers.ModelSerializer):
 
 
 class UpdateEvaluationSerializer(serializers.ModelSerializer):
-    """
-    Serializer for UpdateEvaluation objects.
-    """
 
     class Meta:
         model = Evaluation
         fields = ('content', 'rating', 'completed')
         extra_kwargs = {'completed': {'read_only': True}}
-
 
     def save(self):
         content = self.validated_data.get('content')
@@ -110,10 +111,17 @@ class UpdateEvaluationSerializer(serializers.ModelSerializer):
         return super().save()
 
 
-
-class MyEvaluationSerializer(serializers.ModelSerializer):
-    task_list = TaskListSerializer()
+class TaskListEvaluationSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Evaluation
-        fields = ('id', 'week', 'content', 'rating', 'created_at', 'completed', 'task_list')
+        fields = ('content', 'rating', 'completed', 'evaluator', 'created_at')
+
+
+class MyEvaluationSerializer(serializers.ModelSerializer):
+    evaluations = TaskListEvaluationSerializer(many=True, read_only=True)
+    tasks = TaskItemSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = TaskList
+        fields = ('id', 'week', 'created_at', 'evaluations', 'tasks')

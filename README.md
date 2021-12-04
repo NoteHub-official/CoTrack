@@ -111,42 +111,64 @@ Response Format:
 
 
 
-##### 4. Get all received evaluations
+##### 4. Get all received evaluations 
 
 * **URL:** `api/received_evals/`
 
 * **HTTP**: **GET**
 * **Login Required:** ***True***
 
-Response Format:
+Response Format (**GROUP BY task_list ORDER BY week DESC**):
 
 ```json
-{
+[
   {
-        "id": 16,
-        "week": 1,
-        "content": "adsdasd",
+    "id": 16,
+    "week": 3,
+    "created_at": "2021-12-04T21:35:54.266330Z",
+    "evaluations": [
+      {
+        "content": "AAAAA",
         "rating": 0,
-        "created_at": "2021-12-04T07:37:10.471329Z",
         "completed": false,
-        "task_list": {
-            "id": 9,
-            "week": 1,
-            "created_at": "2021-12-04T07:37:10.458263Z",
-            "tasks": [
-                {
-                    "id": 5,
-                    "content": "hi"
-                },
-                {
-                    "id": 6,
-                    "content": "hisadasd"
-                }
-            ]
-        }
-    },
-		...
-}
+        "evaluator": 4,
+        "created_at": "2021-12-04T21:35:54.277250Z"
+      },
+      {
+        "content": "BBBBBB",
+        "rating": 0,
+        "completed": false,
+        "evaluator": 4,
+        "created_at": "2021-12-04T21:35:57.974349Z"
+      },
+      {
+        "content": "CCCCCC",
+        "rating": 0,
+        "completed": false,
+        "evaluator": 4,
+        "created_at": "2021-12-04T21:36:00.749694Z"
+      }
+    ],
+    "tasks": [
+      {
+        "id": 8,
+        "content": "New Item 1",
+        "completed": false
+      },
+      {
+        "id": 9,
+        "content": "New Item 2",
+        "completed": false
+      },
+      {
+        "id": 10,
+        "content": "New Item 3",
+        "completed": false
+      }
+    ]
+  },
+  ...
+]
 ```
 
 
@@ -182,7 +204,7 @@ Reponse Format:
 
 
 
-##### 1. Modify an existing Task Item
+##### 2. Modify an existing Task Item
 
 * **URL:** `api/task_items/<task_item_pk>/`
 

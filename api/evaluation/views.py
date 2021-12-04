@@ -60,6 +60,7 @@ class ReceivedEvaluationViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows evaluations to be viewed or edited (only GET).
     """
+    http_method_names = ['get']
     serializer_class = MyEvaluationSerializer
 
     def get_serializer_context(self):
@@ -67,5 +68,5 @@ class ReceivedEvaluationViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         user = self.request.user
-        return Evaluation.objects.select_related('evaluated_user', 'task_list').prefetch_related('task_list__tasks').filter(evaluated_user=user)
+        return TaskList.objects.prefetch_related('evaluations', 'tasks').filter(user=user).order_by('-week')
 
