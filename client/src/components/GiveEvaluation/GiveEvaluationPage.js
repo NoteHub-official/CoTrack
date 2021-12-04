@@ -3,9 +3,19 @@ import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import Divider from "@mui/material/Divider";
 import List from "@mui/material/List";
-
+import { makeStyles } from "@material-ui/core/styles";
+import Hidden from "@mui/material/Hidden";
 import EvaluationForm from "./EvaluationForm";
 import AssignedEvaluationItem from "./AssignedEvaluationItem";
+
+const useStyles = makeStyles((theme) => ({
+  itemContainer: {
+    "&::-webkit-scrollbar": {
+      width: 0,
+      background: "transparent",
+    },
+  },
+}));
 
 const GiveEvaluationPage = () => {
   const receivedEvaluations = [
@@ -53,43 +63,44 @@ const GiveEvaluationPage = () => {
     },
   ];
 
+  const classes = useStyles();
   const [value, setValue] = React.useState(0);
   const handleClick = (newValue) => {
     setValue(newValue);
   };
 
   return (
-    <Box>
-      <Grid container justifyContent="flex-start" component={Box}>
-        <Grid item xs={3}>
-          <Grid
-            container
-            direction="column"
-            spacing={2}
-            style={{ maxHeight: "100vh", overflow: "auto" }}
+    <Grid
+      container
+      direction="row"
+      style={{ maxHeight: "100vh" }}
+      alignItems="flex-start"
+    >
+      <Hidden lgDown>
+        <Grid item justifyContent="flex-start" style={{ maxHeight: "100vh" }}>
+          <List
+            sx={{ overflow: "auto", maxHeight: "89vh", paddintg: 0, margin: 0 }}
           >
-            <List>
-              {receivedEvaluations.map((evaluation, index) => (
-                <Grid item key={index}>
-                  <AssignedEvaluationItem
-                    name={evaluation.name}
-                    date={evaluation.date}
-                    role={evaluation.role}
-                    image={evaluation.image}
-                    handleClick={handleClick}
-                  />
-                  <Divider />
-                </Grid>
-              ))}
-            </List>
-          </Grid>
+            {receivedEvaluations.map((evaluation, index) => (
+              <Grid item key={index}>
+                <AssignedEvaluationItem
+                  name={evaluation.name}
+                  date={evaluation.date}
+                  role={evaluation.role}
+                  image={evaluation.image}
+                  handleClick={handleClick}
+                />
+                <Divider />
+              </Grid>
+            ))}
+          </List>
         </Grid>
         <Divider orientation="vertical" variant="middle" flexItem />
-        <Grid xs item>
-          <EvaluationForm />
-        </Grid>
+      </Hidden>
+      <Grid item flexGrow={1} style={{ maxHeight: "100%" }}>
+        <EvaluationForm />
       </Grid>
-    </Box>
+    </Grid>
   );
 };
 

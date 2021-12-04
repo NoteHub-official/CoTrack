@@ -4,9 +4,9 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Header from "./components/ui/Header";
 import theme from "./components/ui/Theme.js";
 import GiveEvaluationPage from "./components/GiveEvaluation/GiveEvaluationPage";
-
+import LandingPage from "./components/ui/LandingPage";
 const MyEvaluation = () => <div>My evaluation</div>;
-const LandingPage = () => <div>Landing Page</div>;
+
 function App() {
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [value, setValue] = useState(0);
