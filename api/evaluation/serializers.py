@@ -57,17 +57,30 @@ class AddEvaluationSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Evaluation
-        fields = ('id', 'week', 'content', 'evaluated_user', 'created_at')
+        fields = ('id', 'week', 'content', 'evaluator', 'evaluated_user', 'created_at')
 
     def save(self):
         request = self.context.get('request')
         try:
             content = self.validated_data.get('content')
-            evaluator = request.user
+            evaluator = self.validated_data.get('evaluator', None)
+            if not evaluator:
+                print('Manual Assign Evaluation')
+                evaluator = request.user
             week = self.validated_data.get('week')
             evaluated_user = self.validated_data.get('evaluated_user')
             # get or create a new task_list
             task_list = TaskList.objects.get_or_create(user=evaluated_user, week=week)[0]
+            # check if evaluation exists
+            prev_evaluations = Evaluation.objects.filter(
+                week=week,
+                evaluator=evaluator,
+                evaluated_user=evaluated_user,
+            )
+            if len(prev_evaluations) > 0:
+                print('Evaluation already exists')
+                return prev_evaluations[0]
+            # create a new evaluation
             evaluation = Evaluation.objects.create(
                 week=week,
                 content=content,

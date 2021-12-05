@@ -61,7 +61,7 @@ Request Format:
 
 ### Evaluation
 
-##### 1. Assign a new evaluation for user
+##### 1. Assign a new evaluation for user (Do not use this unless unexpected things happen!)
 
 * **URL:** `api/assigned_evals/`
 
