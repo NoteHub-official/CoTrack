@@ -1,5 +1,6 @@
 from rest_framework import viewsets
-
+from rest_framework.permissions import IsAuthenticated, IsAdminUser
+from rest_framework.decorators import action
 from .serializers import UserSerializer, EvaluationSerializer, AddEvaluationSerializer, TaskListSerializer, TaskItemSerializer, AddTaskItemSerializer, UpdateEvaluationSerializer, MyEvaluationSerializer
 from core.models import User
 from .models import Evaluation, TaskList, TaskItem
@@ -11,12 +12,14 @@ class UserViewSet(viewsets.ModelViewSet):
     """
     queryset = User.objects.all()
     serializer_class = UserSerializer
+    permission_classes = [IsAdminUser]
 
 
 class AssignedEvaluationViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows evaluations to be viewed or edited.
     """
+    permission_classes = [IsAuthenticated]
 
     def get_serializer_context(self):
         return {'request': self.request, 'id': self.kwargs.get('pk', None)}
@@ -26,7 +29,7 @@ class AssignedEvaluationViewSet(viewsets.ModelViewSet):
         # get week kwargs from request
         week = self.request.query_params.get('week', None)
         if week is None:
-            return Evaluation.objects.none()
+            return Evaluation.objects.select_related('evaluated_user', 'task_list').prefetch_related('task_list__tasks').filter(evaluator=user)
         return Evaluation.objects.select_related('evaluated_user', 'task_list').prefetch_related('task_list__tasks').filter(evaluator=user, week=week)
 
     def get_serializer_class(self):
@@ -38,12 +41,35 @@ class AssignedEvaluationViewSet(viewsets.ModelViewSet):
             return UpdateEvaluationSerializer
         return EvaluationSerializer
 
+    @action(detail=False, methods=['PUT'], permission_classes=[IsAdminUser])
+    def generate_weekly_evaluations(self, request):
+        """
+        Generate new evaluations for all users.
+        """
+        users = User.objects.all()
+        week = self.request.get('week')
+        for evaluator in users:
+            for evaluated_user in users:
+                if evaluator.id == evaluated_user:
+                    continue
+                serializer = AddEvaluationSerializer(data={
+                    'evaluator': evaluator.id,
+                    'evaluated_user': evaluated_user.id,
+                    'content': "",
+                    'week': week
+                })
+                serializer.is_valid(raise_exception=True)
+                serializer.save()
+
+        return self.list(request)
+
 
 class TaskItemViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows task items to be viewed or edited
     """
     queryset = TaskItem.objects.all()
+    permission_classes = [IsAuthenticated]
 
     def get_serializer_context(self):
         return {'request': self.request}
@@ -60,12 +86,13 @@ class ReceivedEvaluationViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows evaluations to be viewed or edited (only GET).
     """
+    http_method_names = ['get']
     serializer_class = MyEvaluationSerializer
+    permission_classes = [IsAuthenticated]
 
     def get_serializer_context(self):
         return {'request': self.request}
 
     def get_queryset(self):
         user = self.request.user
-        return Evaluation.objects.select_related('evaluated_user', 'task_list').prefetch_related('task_list__tasks').filter(evaluated_user=user)
-
+        return TaskList.objects.prefetch_related('evaluations', 'tasks').filter(user=user).order_by('-week')
