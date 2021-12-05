@@ -6,6 +6,59 @@ Team collaborative evaluation tracker.
 
 # API Reference
 
+### Authentication
+
+#### Authorization Header
+
+```json
+{
+  "Authorization": "JWT <access_token>"
+}
+```
+
+##### 1. Login
+
+* **URL:** `auth/jwt/create/`
+
+* **HTTP**: **POST**
+* **Login Required:** ***False***
+
+Request Format:
+
+```json
+{
+    "username": "test",
+    "password": "123456"
+}
+```
+
+Response Format (use ***Access token***):
+
+```json
+{
+    "refresh": "...J0eXAiOiJKV1QiL...",
+    "access": "...J0eXAiOiJKV1QiL..."
+}
+```
+
+##### 1. Update User Information
+
+* **URL:** `auth/users/me/`
+
+* **HTTP**: **PATCH**
+* **Login Required:** ***True***
+
+Request Format:
+
+```json
+{
+    "first_name": "Brian", // Optional
+    "last_name": "Yin"     // Optional
+}
+```
+
+
+
 ### Evaluation
 
 ##### 1. Assign a new evaluation for user
@@ -59,12 +112,12 @@ Response Format:
       "username": "BBB",
       "email": ""
     },
-    "created_at": "2021-12-04T06:05:27.433740Z",
+    "created_at": "2021-12-04",
     "completed": false,
     "task_list": {
       "id": 1,
       "week": 1,
-      "created_at": "2021-12-04T06:05:27.416548Z",
+      "created_at": "2021-12-04",
       "tasks": [
         {
           "id": 1,
@@ -85,10 +138,10 @@ Response Format:
 
 ##### 3. Edit evaluation content & rating
 
-* **URL:** `api/received_evals/<evaluation_pk>/?week=<int:week>/`
+* **URL:** `api/assigned_evals/<evaluation_pk>/`
 
 * **HTTP**: **PATCH**
-* **Login Required:** ***False***
+* **Login Required:** ***True***
 
 Request Format:
 
@@ -125,28 +178,28 @@ Response Format (**GROUP BY task_list ORDER BY week DESC**):
   {
     "id": 16,
     "week": 3,
-    "created_at": "2021-12-04T21:35:54.266330Z",
+    "created_at": "2021-12-04",
     "evaluations": [
       {
         "content": "AAAAA",
         "rating": 0,
         "completed": false,
         "evaluator": 4,
-        "created_at": "2021-12-04T21:35:54.277250Z"
+        "created_at": "2021-12-04"
       },
       {
         "content": "BBBBBB",
         "rating": 0,
         "completed": false,
         "evaluator": 4,
-        "created_at": "2021-12-04T21:35:57.974349Z"
+        "created_at": "2021-12-04"
       },
       {
         "content": "CCCCCC",
         "rating": 0,
         "completed": false,
         "evaluator": 4,
-        "created_at": "2021-12-04T21:36:00.749694Z"
+        "created_at": "2021-12-04"
       }
     ],
     "tasks": [
@@ -182,7 +235,7 @@ Response Format (**GROUP BY task_list ORDER BY week DESC**):
 * **URL:** `api/task_items/`
 
 * **HTTP**: **POST**
-* **Login Required:** ***False***
+* **Login Required:** ***True***
 
 Request Format:
 
@@ -209,7 +262,7 @@ Reponse Format:
 * **URL:** `api/task_items/<task_item_pk>/`
 
 * **HTTP**: **PATCH**
-* **Login Required:** ***False***
+* **Login Required:** ***True***
 
 Request Format:
 

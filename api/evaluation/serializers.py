@@ -112,10 +112,9 @@ class UpdateEvaluationSerializer(serializers.ModelSerializer):
 
 
 class TaskListEvaluationSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = Evaluation
-        fields = ('content', 'rating', 'completed', 'evaluator', 'created_at')
+        fields = ('content', 'rating', 'completed', 'created_at')
 
 
 class MyEvaluationSerializer(serializers.ModelSerializer):
