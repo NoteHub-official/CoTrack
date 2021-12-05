@@ -11,7 +11,8 @@ import Toolbar from "@material-ui/core/Toolbar";
 import { Link } from "react-router-dom";
 
 import Spacer from "./Spacer";
-import logo from "../../logo.svg";
+//import logo from "../../logo.svg";
+import logo from "../../static/logo_transparent.png";
 
 function ElevationScroll(props) {
   const { children } = props;
@@ -86,7 +87,12 @@ const Header = (props) => {
                 setValue(0);
               }}
             >
-              <img src={logo} alt="logo" className={classes.logo} />
+              <img
+                src={logo}
+                alt="logo"
+                className={classes.logo}
+                style={{ width: 52, margin: "auto" }}
+              />
             </Button>
             {tabs}
             <Spacer />
