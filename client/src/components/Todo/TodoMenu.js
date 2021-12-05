@@ -22,7 +22,7 @@ export default function TodoMenu(props) {
   };
   return (
     <Menu sx={{ width: 320, maxWidth: "100%" }} anchorEl={anchorEl} open={open}>
-      <MenuList>
+      <MenuList sx={{ p: 0 }}>
         <MenuItem onClick={handleClick}>
           <ListItemIcon>
             <FormatListBulletedIcon fontSize="small" />

@@ -79,7 +79,7 @@ const GiveEvaluationPage = () => {
       <Hidden lgDown>
         <Grid item justifyContent="flex-start" style={{ maxHeight: "100vh" }}>
           <List
-            sx={{ overflow: "auto", maxHeight: "89vh", paddintg: 0, margin: 0 }}
+            sx={{ overflow: "auto", maxHeight: "100%", paddintg: 0, margin: 0 }}
           >
             {receivedEvaluations.map((evaluation, index) => (
               <Grid item key={index}>

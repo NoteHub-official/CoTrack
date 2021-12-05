@@ -35,8 +35,7 @@ const useStyles = makeStyles((theme) => ({
 const Header = (props) => {
   const classes = useStyles();
   //const theme = useTheme();
-
-  const [value, setValue] = useState(0);
+  const { value, setValue } = props;
 
   const routes = [
     { name: "Home", link: "/" },
@@ -49,7 +48,7 @@ const Header = (props) => {
       setValue(0);
     } else if (window.location.pathname === "/give" && value !== 1) {
       setValue(1);
-    } else if (window.location.pathname === "/me" && value === 2) {
+    } else if (window.location.pathname === "/me" && value !== 2) {
       setValue(2);
     }
   }, [value, setValue]);

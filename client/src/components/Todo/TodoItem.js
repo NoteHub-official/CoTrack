@@ -1,12 +1,11 @@
 import React, { useState } from "react";
-import { styled } from "@mui/material/styles";
-import Box from "@mui/material/Box";
 import ListItem from "@mui/material/ListItem";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
+import AssignmentIcon from "@mui/icons-material/Assignment";
 import Divider from "@mui/material/Divider";
 import ListItemButton from "@mui/material/ListItemButton";
 import TextField from "@mui/material/TextField";
@@ -14,8 +13,15 @@ import TodoMenu from "./TodoMenu";
 import ClickAwayListener from "@mui/material/ClickAwayListener";
 import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
-
-const TodoItem = ({ todo, handleOnComplete, handleOnUpdate, readOnly }) => {
+const TodoItem = ({
+  todo,
+  handleOnComplete,
+  handleOnUpdate,
+  readOnly,
+  showComplete,
+  assignmentIcon,
+}) => {
+  // showComplete will only make affect when readOnly is true
   const { task, completed, secondary, index } = todo;
 
   const [edit, setEditValue] = useState(0);
@@ -49,8 +55,8 @@ const TodoItem = ({ todo, handleOnComplete, handleOnUpdate, readOnly }) => {
   };
 
   const determineColor = () => {
-    if (readOnly) {
-      return "success";
+    if (readOnly && !showComplete) {
+      return "warning";
     } else {
       return completed ? "success" : "disabled";
     }
@@ -70,7 +76,11 @@ const TodoItem = ({ todo, handleOnComplete, handleOnUpdate, readOnly }) => {
       >
         <ListItemIcon onClick={readOnly ? null : buttonClickHandler}>
           <IconButton aria-label="complete">
-            <CheckCircleOutlineIcon fontSize="large" color={buttonColor} />
+            {assignmentIcon ? (
+              <AssignmentIcon fontSize="large" color={buttonColor} />
+            ) : (
+              <CheckCircleOutlineIcon fontSize="large" color={buttonColor} />
+            )}
           </IconButton>
         </ListItemIcon>
         {edit === 1 && (
@@ -86,6 +96,7 @@ const TodoItem = ({ todo, handleOnComplete, handleOnUpdate, readOnly }) => {
               id="filled-basic"
               label="Task"
               variant="filled"
+              multiline
               defaultValue={task}
               onKeyDown={keyPressTask}
             />

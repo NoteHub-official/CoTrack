@@ -22,6 +22,20 @@ const EvaluationForm = (props) => {
     { task: "Learn Redux", completed: false, secondary: "Redux is awesome" },
     { task: "Learn GraphQL", completed: false },
   ];
+  const todos = [
+    {
+      task: "Llass other than those in CS major? Learn Do I need to take CS 361 as I already have MATH461? Can I take other advanced composition class other than those in CS major?",
+      completed: true,
+      secondary: "2 days left",
+    },
+    {
+      task: "Learn earn Reduearn Redu",
+      completed: false,
+      secondary: "Redux is awesome",
+    },
+    { task: "Learn GraphQLGraphQLGraphQLGraphQL", completed: false },
+  ];
+
   return (
     <React.Fragment>
       <Grid
@@ -33,15 +47,23 @@ const EvaluationForm = (props) => {
         sx={{ width: "100%" }}
       >
         <Grid item sx={{ minWidth: 500 }}>
-          <ThumbUpOffAltIcon
-            color="primary"
-            sx={{ height: "70px", width: "70px" }}
-          />
-          <ThumbDownOffAltIcon
-            color="secondary"
-            sx={{ height: "70px", width: "70px" }}
-          />
-          <Paper elevation={3} sx={{ width: "100%" }}>
+          <Grid
+            container
+            alignItems="center"
+            justifyContent="center"
+            sx={{ mb: 2 }}
+          >
+            <ThumbUpOffAltIcon
+              color="primary"
+              sx={{ height: "70px", width: "70px" }}
+            />
+            <ThumbDownOffAltIcon
+              color="secondary"
+              sx={{ height: "70px", width: "70px" }}
+            />
+          </Grid>
+
+          <Paper elevation={3} sx={{ width: "100%", mb: 5 }}>
             <Typography
               component="div"
               align="left"
@@ -60,27 +82,57 @@ const EvaluationForm = (props) => {
               justifyContent="center"
             >
               <Grid item>
-                <TodoList readOnly />
+                <TodoList readOnly todos={todos} assignmentIcon />
               </Grid>
             </Grid>
           </Paper>
-          <Typography variant="h5" gutterBottom align="left">
-            Do you like to work with {name} ?
-          </Typography>
-          <Box mt={5}>
-            <HoverRating />
-          </Box>
-          <Typography variant="h5" gutterBottom align="left">
-            Any Comment for {name}?
-          </Typography>
-          <TextField
-            id="outlined-multiline-static"
-            fullWidth
-            label="Comment"
-            multiline
-            rows={4}
-            defaultValue="Good work~"
-          />
+
+          <Paper elevation={3} sx={{ width: "100%", mb: 5 }}>
+            <Typography
+              component="div"
+              align="left"
+              sx={{ padding: 2, fontSize: "1.2em" }}
+            >
+              Do you like to work with {name} ?
+            </Typography>
+            <Divider />
+            <Grid
+              container
+              width="100%"
+              height="100%"
+              spacing={0}
+              alignItems="center"
+              justifyContent="center"
+            >
+              <HoverRating />
+            </Grid>
+          </Paper>
+
+          <Paper elevation={3} sx={{ width: "100%" }}>
+            <Typography
+              component="div"
+              align="left"
+              sx={{ padding: 2, fontSize: "1.2em" }}
+            >
+              Do you have any comments for {name}?
+            </Typography>
+            <Grid
+              container
+              width="100%"
+              height="100%"
+              spacing={0}
+              alignItems="center"
+              justifyContent="center"
+            >
+              <TextField
+                id="outlined-multiline-static"
+                fullWidth
+                label="Comment"
+                multiline
+                rows={4}
+              />
+            </Grid>
+          </Paper>
           <Box
             sx={{
               mt: "2rem",
