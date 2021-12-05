@@ -6,20 +6,25 @@ import theme from "./components/ui/Theme.js";
 import GiveEvaluationPage from "./components/GiveEvaluation/GiveEvaluationPage";
 import LandingPage from "./components/ui/LandingPage";
 import MyEvaluationPage from "./components/MyEvaluation/MyEvaluationPage";
+import CurrentUserContext from "./contexts/current-user/current-user.context";
+import LoginPage from "./components/ui/LoginPage";
 
 function App() {
   const [value, setValue] = useState(0);
-
+  const [currentUser, setCurrentUser] = useState(null);
   return (
     <ThemeProvider theme={theme}>
-      <BrowserRouter>
-        <Header value={value} setValue={setValue} />
-        <Routes>
-          <Route path="/" element={<LandingPage />} />
-          <Route path="/give" element={<GiveEvaluationPage />} />
-          <Route path="/me" element={<MyEvaluationPage />} />
-        </Routes>
-      </BrowserRouter>
+      <CurrentUserContext.Provider value={currentUser}>
+        <BrowserRouter>
+          <Header value={value} setValue={setValue} />
+          <Routes>
+            <Route path="/" element={<LandingPage />} />
+            <Route path="/give" element={<GiveEvaluationPage />} />
+            <Route path="/me" element={<MyEvaluationPage />} />
+            <Route path="/login" element={<LoginPage />} />
+          </Routes>
+        </BrowserRouter>
+      </CurrentUserContext.Provider>
     </ThemeProvider>
   );
 }

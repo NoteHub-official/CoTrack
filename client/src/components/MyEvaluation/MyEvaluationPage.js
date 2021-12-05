@@ -29,7 +29,7 @@ const MyEvaluationPage = () => {
       avgRating: 6,
       comments: [
         {
-          comment: "Eat hot123123pot",
+          comment: "Eat hot123123pothot123123pothot123123pothot123123pothot123123pothot123123pot",
           rating: 1,
         },
         {

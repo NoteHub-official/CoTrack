@@ -41,9 +41,8 @@ const EvaluationForm = (props) => {
       <Grid
         container
         direction="column"
-        spacing={3}
-        alignItems="center"
         justifyContent="center"
+        alignItems="center"
         sx={{ width: "100%" }}
       >
         <Grid item sx={{ minWidth: 500 }}>
