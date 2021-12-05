@@ -1,9 +1,13 @@
 from rest_framework import viewsets
+from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.decorators import action
 from .serializers import UserSerializer, EvaluationSerializer, AddEvaluationSerializer, TaskListSerializer, TaskItemSerializer, AddTaskItemSerializer, UpdateEvaluationSerializer, MyEvaluationSerializer
 from core.models import User
 from .models import Evaluation, TaskList, TaskItem
+from rest_framework import status
+from django.db import transaction
+from django.db.models import Max
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -41,27 +45,35 @@ class AssignedEvaluationViewSet(viewsets.ModelViewSet):
             return UpdateEvaluationSerializer
         return EvaluationSerializer
 
+
     @action(detail=False, methods=['PUT'], permission_classes=[IsAdminUser])
+    @transaction.atomic()
     def generate_weekly_evaluations(self, request):
         """
         Generate new evaluations for all users.
         """
         users = User.objects.all()
-        week = self.request.get('week')
-        for evaluator in users:
-            for evaluated_user in users:
-                if evaluator.id == evaluated_user:
-                    continue
-                serializer = AddEvaluationSerializer(data={
-                    'evaluator': evaluator.id,
-                    'evaluated_user': evaluated_user.id,
-                    'content': "",
-                    'week': week
-                })
-                serializer.is_valid(raise_exception=True)
-                serializer.save()
+        week = request.data.get('week')
 
-        return self.list(request)
+        try:
+            for evaluator in users:
+                for evaluated_user in users:
+                    if evaluator.id == evaluated_user.id:
+                        continue
+                    serializer = AddEvaluationSerializer(data={
+                        'evaluator': evaluator.id,
+                        'evaluated_user': evaluated_user.id,
+                        'content': "",
+                        'week': week
+                    })
+                    serializer.is_valid(raise_exception=True)
+                    serializer.save()
+
+            queryset = Evaluation.objects.filter(week=week)
+            return Response(status=status.HTTP_200_OK, data=EvaluationSerializer(queryset, many=True).data)
+
+        except Exception as e:
+            return Response(status=status.HTTP_400_BAD_REQUEST, data=str(e))
 
 
 class TaskItemViewSet(viewsets.ModelViewSet):
