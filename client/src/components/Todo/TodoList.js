@@ -8,7 +8,7 @@ const TodoList = (props) => {
     props;
   const [todoItems, setTodoItems] = React.useState(todos);
   const handleOnUpdate = (newValue, index) => {
-    todoItems[index].task = newValue.task;
+    todoItems[index].content = newValue.content;
     todoItems[index].secondary = newValue.secondary;
     setTodoItems([...todoItems]);
   };

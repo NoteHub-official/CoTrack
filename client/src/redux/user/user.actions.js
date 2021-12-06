@@ -26,7 +26,6 @@ export const setAuthTokens = (tokenAndRefresh) => ({
 
 export const signInAsync = (username, password) => {
   return (dispatch) => {
-    console.log(process.env.NODE_ENV);
 
     axios
       .post(`${process.env.REACT_APP_API_URL_AUTH}/jwt/create/`, {

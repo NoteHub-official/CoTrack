@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import HoverRating from "./HoverRating";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
@@ -10,31 +10,52 @@ import ThumbDownOffAltIcon from "@mui/icons-material/ThumbDownOffAlt";
 import TodoList from "../Todo/TodoList";
 import Paper from "@mui/material/Paper";
 import Divider from "@mui/material/Divider";
+import { useSelector } from "react-redux";
+import { selectCurrentUser } from "../../redux/user/user.selectors";
+import axios from "axios";
 
 const EvaluationForm = (props) => {
-  const name = "Kuke";
-  const tasks = [
-    {
-      task: "Learn ReactReactReactReactReactReactReactReact",
-      completed: true,
-      secondary: "2 days left",
-    },
-    { task: "Learn Redux", completed: false, secondary: "Redux is awesome" },
-    { task: "Learn GraphQL", completed: false },
-  ];
-  const todos = [
-    {
-      task: "Llass other than those in CS major? Learn Do I need to take CS 361 as I already have MATH461? Can I take other advanced composition class other than those in CS major?",
-      completed: true,
-      secondary: "2 days left",
-    },
-    {
-      task: "Learn earn Reduearn Redu",
-      completed: false,
-      secondary: "Redux is awesome",
-    },
-    { task: "Learn GraphQLGraphQLGraphQLGraphQL", completed: false },
-  ];
+  const {
+    initContent,
+    name,
+    initRating,
+    taskList,
+    evaluationId,
+    setCompleted,
+  } = props;
+  const [content, setContent] = useState("");
+  const [rating, setRating] = useState(0);
+  const { access } = useSelector(selectCurrentUser);
+
+  const patchEvaluationAsync = async () => {
+    axios
+      .patch(
+        `${process.env.REACT_APP_API_URL_API}/assigned_evals/${evaluationId}/`,
+        {
+          content,
+          rating,
+        },
+        {
+          headers: {
+            Authorization: `JWT ${access}`,
+          },
+        }
+      )
+      .then((res) => {
+        setContent(res.data.content);
+        setRating(res.data.rating);
+      });
+  };
+
+  const handleCompleteSuccess = () => {
+    setCompleted(evaluationId);
+    patchEvaluationAsync();
+  };
+
+  useEffect(() => {
+    setContent(initContent);
+    setRating(initRating);
+  }, [initContent, initRating]);
 
   return (
     <React.Fragment>
@@ -81,7 +102,7 @@ const EvaluationForm = (props) => {
               justifyContent="center"
             >
               <Grid item>
-                <TodoList readOnly todos={todos} assignmentIcon />
+                <TodoList readOnly todos={taskList} assignmentIcon />
               </Grid>
             </Grid>
           </Paper>
@@ -103,7 +124,7 @@ const EvaluationForm = (props) => {
               alignItems="center"
               justifyContent="center"
             >
-              <HoverRating />
+              <HoverRating rating={rating} setRating={setRating} />
             </Grid>
           </Paper>
 
@@ -129,6 +150,8 @@ const EvaluationForm = (props) => {
                 label="Comment"
                 multiline
                 rows={4}
+                value={content}
+                onChange={(e) => setContent(e.target.value)}
               />
             </Grid>
           </Paper>
@@ -142,8 +165,12 @@ const EvaluationForm = (props) => {
               padding: 5,
             }}
           >
-            <Button variant="contained" color="primary">
-              Submit
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={handleCompleteSuccess}
+            >
+              Save
             </Button>
           </Box>
         </Grid>

@@ -32,13 +32,14 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function AssignedEvaluationItem(props) {
-  const { name, date, role, image, handleClick } = props;
+  const { name, date, role, image, handleClick, completed, index } = props;
   const classes = useStyles();
+
+  const clickHandler = () => {
+    handleClick(index);
+  };
   return (
-    <Paper
-      sx={{ p: 2, maxWidth: 500, flexGrow: 1 }}
-      elevation={0}
-    >
+    <Paper sx={{ p: 2, maxWidth: 500, flexGrow: 1 }} elevation={0}>
       <Grid container spacing={2} direction="row" justifyContent="center">
         <Grid item>
           <Img alt="complex" src={image} sx={{ borderRadius: 50, width: 80 }} />
@@ -75,19 +76,30 @@ export default function AssignedEvaluationItem(props) {
               sx={{ height: "100%" }}
             >
               <Grid item>
-                <Typography
-                  gutterBottom
-                  variant="subtitle1"
-                  color="green"
-                  align="center"
-                >
-                  Completed
-                </Typography>
+                {completed ? (
+                  <Typography
+                    gutterBottom
+                    variant="subtitle1"
+                    color="green"
+                    align="center"
+                  >
+                    Completed
+                  </Typography>
+                ) : (
+                  <Typography
+                    gutterBottom
+                    variant="subtitle1"
+                    color="red"
+                    align="center"
+                  >
+                    Incompleted
+                  </Typography>
+                )}
               </Grid>
               <Grid item>
                 <Button
                   className={classes.button}
-                  onClick={handleClick}
+                  onClick={clickHandler}
                   variant="outlined"
                   color="primary"
                   size="small"

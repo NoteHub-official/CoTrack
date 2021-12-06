@@ -18,7 +18,7 @@ import Spacer from "./Spacer";
 import logo from "../../static/logo_transparent.png";
 
 import { selectCurrentUser } from "../../redux/user/user.selectors";
-
+import { signOut } from "../../redux/user/user.actions";
 function ElevationScroll(props) {
   const { children } = props;
 
@@ -43,6 +43,7 @@ const Header = (props) => {
   //const theme = useTheme();
   const { value, setValue } = props;
 
+  const dispatch = useDispatch();
   const currentUser = useSelector(selectCurrentUser);
 
   const routes = [
@@ -108,7 +109,10 @@ const Header = (props) => {
                 color="inherit"
                 className={classes.button}
                 component={Link}
-                to="/logout"
+                to="/"
+                onClick={() => {
+                  dispatch(signOut());
+                }}
               >
                 Logout
               </Button>

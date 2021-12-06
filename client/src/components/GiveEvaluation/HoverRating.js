@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useEffect } from "react";
 import Rating from "@mui/material/Rating";
 import Grid from "@mui/material/Grid";
 import StarIcon from "@mui/icons-material/Star";
@@ -18,8 +18,13 @@ const labels = {
 };
 
 export default function HoverRating(props) {
-  const [value, setValue] = React.useState(2);
+  const { rating, setRating } = props;
+  const [value, setValue] = React.useState(0);
   const [hover, setHover] = React.useState(-1);
+
+  useEffect(() => {
+    setValue(rating);
+  }, [rating]);
   return (
     <Grid
       container
@@ -38,6 +43,7 @@ export default function HoverRating(props) {
         max={10}
         onChange={(event, newValue) => {
           setValue(newValue);
+          setRating(newValue);
         }}
         onChangeActive={(event, newHover) => {
           setHover(newHover);

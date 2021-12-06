@@ -23,7 +23,7 @@ const TodoItem = ({
   setNewTask,
 }) => {
   // showComplete will only make affect when readOnly is true
-  const { task, completed, secondary, index, newTask } = todo;
+  const { content, completed, secondary, index, newTask } = todo;
 
   const [edit, setEditValue] = useState(newTask ? 1 : 0);
   const [anchorEl, setAnchorEl] = useState(null);
@@ -36,13 +36,13 @@ const TodoItem = ({
         console.log("newtask");
         setNewTask(0);
       }
-      handleOnUpdate({ task: e.target.value, secondary }, index);
+      handleOnUpdate({ content: e.target.value, secondary }, index);
     }
   };
   const keyPressNote = (e) => {
     if (e.keyCode === 13) {
       setEditValue(0);
-      handleOnUpdate({ task, secondary: e.target.value }, index);
+      handleOnUpdate({ content, secondary: e.target.value }, index);
     }
   };
 
@@ -102,7 +102,7 @@ const TodoItem = ({
               label="Task"
               variant="filled"
               multiline
-              defaultValue={task}
+              defaultValue={content}
               onKeyDown={keyPressTask}
             />
           </Grid>
@@ -133,7 +133,7 @@ const TodoItem = ({
             >
               <ListItemText
                 component={Button}
-                primary={task}
+                primary={content}
                 secondary={secondary && !readOnly ? secondary : null}
               />
             </ListItemButton>
