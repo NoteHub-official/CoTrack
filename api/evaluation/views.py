@@ -1,13 +1,33 @@
 from rest_framework import viewsets
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
-from rest_framework.decorators import action
+from rest_framework.decorators import action, api_view, permission_classes
 from .serializers import UserSerializer, EvaluationSerializer, AddEvaluationSerializer, TaskListSerializer, TaskItemSerializer, AddTaskItemSerializer, UpdateEvaluationSerializer, MyEvaluationSerializer
 from core.models import User
-from .models import Evaluation, TaskList, TaskItem
+from .models import Evaluation, TaskList, TaskItem, Week
 from rest_framework import status
 from django.db import transaction
 from django.db.models import Max
+# import APIView
+from rest_framework.views import APIView
+
+
+class WeekView(APIView):
+
+    def get_permissions(self):
+        if self.request.method == 'POST':
+            return [IsAdminUser()]
+        return [IsAuthenticated()]
+
+    def get(self, request):
+        week = Week.objects.get_or_create()
+        return Response(status=status.HTTP_200_OK, data=week[0].week)
+
+    def post(self, request):
+        week = Week.objects.get_or_create()[0]
+        week.week = request.data['week']
+        week.save()
+        return Response(status=status.HTTP_200_OK, data=week.week)
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -108,3 +128,6 @@ class ReceivedEvaluationViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         user = self.request.user
         return TaskList.objects.prefetch_related('evaluations', 'tasks').filter(user=user).order_by('-week')
+
+
+

@@ -22,4 +22,5 @@ urlpatterns = [
     path('', include(assigned_evals.urls)),
     path('', include(received_evals.urls)),
     path('', include(task_items.urls)),
+    path('current_week/', views.WeekView.as_view(), name='current_week')
 ]

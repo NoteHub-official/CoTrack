@@ -13,6 +13,7 @@ class TaskList(models.Model):
 class TaskItem(models.Model):
     task_list = models.ForeignKey(TaskList, on_delete=models.CASCADE, related_name="tasks")
     content = models.CharField(max_length=512, default="")
+    subcontent = models.CharField(max_length=512, default="")
     completed = models.BooleanField(default=False)
     created_at = models.DateField(auto_now_add=True)
     updated_at = models.DateField(auto_now=True)
@@ -29,3 +30,7 @@ class Evaluation(models.Model):
     week = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(52)], default=1)
     completed = models.BooleanField(default=False)
     task_list = models.ForeignKey(TaskList, on_delete=models.CASCADE, related_name="evaluations", null=True)
+
+
+class Week(models.Model):
+    week = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(52)], default=1)
