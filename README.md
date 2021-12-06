@@ -283,3 +283,26 @@ Response Format:
 }
 ```
 
+
+
+### Week
+
+##### Modify an existing Task Item
+
+* **URL:** `api/current_week/`
+
+* **HTTP**: **GET**
+* **Login Required:** ***True***
+
+Response Format:
+
+```json
+{
+  "week": 1
+}
+```
+
+
+
+
+
