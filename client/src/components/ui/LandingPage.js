@@ -1,11 +1,12 @@
 import TodoList from "../Todo/TodoList";
-import React from "react";
+import React, { useState } from "react";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
 import Button from "@mui/material/Button";
+import { useDispatch } from "react-redux";
 const LandingPage = () => {
   const todos = [
     {
@@ -17,7 +18,12 @@ const LandingPage = () => {
     { task: "Learn GraphQL", completed: false },
   ];
   const weekNumber = 1;
+  const [newTask, setNewTask] = useState(0);
+  const dispatch = useDispatch();
 
+  const addNewTask = (e) => {
+    setNewTask(1);
+  };
   return (
     <Grid
       sx={{ margin: "auto" }}
@@ -37,11 +43,11 @@ const LandingPage = () => {
         </Grid>
         <Divider />
         <Grid item>
-          <TodoList todos={todos} />
+          <TodoList todos={todos} newTask={newTask} setNewTask={setNewTask} />
         </Grid>
       </Paper>
       <Grid item>
-        <Button variant="contained">
+        <Button variant="contained" onClick={addNewTask}>
           <Typography align="center" sx={{ fontSize: "1.7em" }}>
             Add New Task
           </Typography>

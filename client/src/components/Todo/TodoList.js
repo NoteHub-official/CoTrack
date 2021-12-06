@@ -1,12 +1,12 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Box from "@mui/material/Box";
 import List from "@mui/material/List";
 
 import TodoItem from "./TodoItem";
 const TodoList = (props) => {
-  const { todos, readOnly, showComplete, assignmentIcon } = props;
+  const { todos, readOnly, showComplete, assignmentIcon, newTask, setNewTask } =
+    props;
   const [todoItems, setTodoItems] = React.useState(todos);
-
   const handleOnUpdate = (newValue, index) => {
     todoItems[index].task = newValue.task;
     todoItems[index].secondary = newValue.secondary;
@@ -16,6 +16,18 @@ const TodoList = (props) => {
     todoItems[index].completed = !todoItems[index].completed;
     setTodoItems([...todoItems]);
   };
+
+  useEffect(() => {
+    if (newTask) {
+      let newOne = {
+        newTask: 1,
+        completed: false,
+      };
+      todoItems.push(newOne);
+      setTodoItems([...todoItems]);
+    }
+  }, [newTask]);
+
   return (
     <Box>
       <List sx={{ width: 800, py: 0 }}>
@@ -28,6 +40,7 @@ const TodoList = (props) => {
             handleOnUpdate={handleOnUpdate}
             handleOnComplete={handleOnComplete}
             assignmentIcon={assignmentIcon}
+            setNewTask={setNewTask}
           />
         ))}
       </List>

@@ -3,41 +3,23 @@ import "./login.css";
 import logo from "../../static/logo_transparent.png";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
-import Divider from "@mui/material/Divider";
 
-export default function AuthPage({ history, login, register, logout }) {
-  const [selectLogin, setSelectLogin] = useState(true);
+import { signInAsync } from "../../redux/user/user.actions";
+import { useDispatch } from "react-redux";
+
+export default function AuthPage(props) {
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
-  const [rePassword, setRePassword] = useState("");
-  const [processing, setProcessing] = useState(false);
+  const dispatch = useDispatch();
 
-  const handleAuthAction = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (selectLogin) {
-      setProcessing(true);
-      const loginSuccess = await login({
-        user_name: userName,
-        password: password,
-      });
-      setProcessing(false);
-      if (loginSuccess) {
-        history.push("/");
-      } else {
-        alert("Login failed - Wrong username or password");
-      }
-    } else {
-      setProcessing(true);
-      const registerSuccess = await register({
-        user_name: userName,
-        password: password,
-      });
-      setProcessing(false);
-      if (registerSuccess) {
-        history.push("/");
-      } else {
-        alert("Registration failed - The user already exists");
-      }
+    dispatch(signInAsync(userName, password));
+  };
+
+  const keyPress = (e) => {
+    if (e.key === "Enter") {
+      dispatch(signInAsync(userName, password));
     }
   };
 
@@ -57,7 +39,7 @@ export default function AuthPage({ history, login, register, logout }) {
               variant="h6"
               style={{ marginBottom: 1, fontSize: "1.5em" }}
             >
-              {selectLogin ? "Login" : "Register"}
+              Login
             </Typography>
 
             <div className="auth-login">
@@ -81,13 +63,14 @@ export default function AuthPage({ history, login, register, logout }) {
                   variant="h6"
                   style={{ marginBottom: 1, fontSize: "0.8em" }}
                 >
-                  Password
+                  Password 🔐
                 </Typography>
                 <input
                   type="password"
                   placeholder="Password"
                   className="auth-input"
                   value={password}
+                  onKeyPress={keyPress}
                   onChange={(e) => setPassword(e.currentTarget.value)}
                 />
               </div>
@@ -95,6 +78,7 @@ export default function AuthPage({ history, login, register, logout }) {
 
             <div className="auth-divider"></div>
             <Button
+              onClick={handleSubmit}
               variant="contained"
               color="primary"
               sx={{ width: "80%" }}

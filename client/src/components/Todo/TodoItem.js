@@ -20,17 +20,22 @@ const TodoItem = ({
   readOnly,
   showComplete,
   assignmentIcon,
+  setNewTask,
 }) => {
   // showComplete will only make affect when readOnly is true
-  const { task, completed, secondary, index } = todo;
+  const { task, completed, secondary, index, newTask } = todo;
 
-  const [edit, setEditValue] = useState(0);
+  const [edit, setEditValue] = useState(newTask ? 1 : 0);
   const [anchorEl, setAnchorEl] = useState(null);
   const [openMenu, setOpenMenu] = useState(false);
 
   const keyPressTask = (e) => {
     if (e.keyCode === 13) {
       setEditValue(0);
+      if (newTask) {
+        console.log("newtask");
+        setNewTask(0);
+      }
       handleOnUpdate({ task: e.target.value, secondary }, index);
     }
   };

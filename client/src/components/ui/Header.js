@@ -1,4 +1,7 @@
 import React, { useState, useEffect } from "react";
+
+import { useSelector, useDispatch } from "react-redux";
+
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import useScrollTrigger from "@mui/material/useScrollTrigger";
 
@@ -13,6 +16,8 @@ import { Link } from "react-router-dom";
 import Spacer from "./Spacer";
 //import logo from "../../logo.svg";
 import logo from "../../static/logo_transparent.png";
+
+import { selectCurrentUser } from "../../redux/user/user.selectors";
 
 function ElevationScroll(props) {
   const { children } = props;
@@ -37,6 +42,8 @@ const Header = (props) => {
   const classes = useStyles();
   //const theme = useTheme();
   const { value, setValue } = props;
+
+  const currentUser = useSelector(selectCurrentUser);
 
   const routes = [
     { name: "Home", link: "/" },
@@ -96,9 +103,25 @@ const Header = (props) => {
             </Button>
             {tabs}
             <Spacer />
-            <Button color="inherit" className={classes.button}>
-              Login
-            </Button>
+            {currentUser ? (
+              <Button
+                color="inherit"
+                className={classes.button}
+                component={Link}
+                to="/logout"
+              >
+                Logout
+              </Button>
+            ) : (
+              <Button
+                color="inherit"
+                className={classes.button}
+                component={Link}
+                to="/login"
+              >
+                Login
+              </Button>
+            )}
           </Toolbar>
         </AppBar>
       </ElevationScroll>
