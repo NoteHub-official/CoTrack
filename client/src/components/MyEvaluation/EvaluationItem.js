@@ -11,8 +11,19 @@ import Chip from "@mui/material/Chip";
 import DateIcon from "@mui/icons-material/CalendarToday";
 import CommentList from "./CommentList";
 const EvaluationItem = (props) => {
-  const { weekDate, avgRating, tasks, comments } = props;
-  console.log(weekDate, avgRating, tasks, comments);
+  const { weekDate, tasks, evaluations } = props;
+  const calculateAvgRating = (evaluations) => {
+    let total = 0;
+    let rating = 0;
+    for (let i = 0; i < evaluations.length; i++) {
+      if (evaluations[i].completed) {
+        total += 1;
+        rating += evaluations[i].rating;
+      }
+    }
+    return Math.round((rating / total) * 10) / 10;
+  };
+  // avgRating={calculateAvgRating(item.evaluations)}
   return (
     <Paper elevation={3} sx={{ width: "100%", mb: 5 }}>
       <Grid container alignItems="center" sx={{ py: 1.4 }}>
@@ -67,7 +78,7 @@ const EvaluationItem = (props) => {
         <Grid item>
           <Rating
             max={10}
-            value={avgRating}
+            value={calculateAvgRating(evaluations)}
             readOnly
             sx={{ padding: 0, mr: 3 }}
           />
@@ -86,7 +97,7 @@ const EvaluationItem = (props) => {
       >
         <Card variant="outlined" sx={{ mb: 2 }}>
           <Grid item>
-            <CommentList comments={comments} />
+            <CommentList comments={evaluations} />
           </Grid>
         </Card>
       </Grid>

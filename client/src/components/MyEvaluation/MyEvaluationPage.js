@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
@@ -9,103 +9,31 @@ import Divider from "@mui/material/Divider";
 import Card from "@mui/material/Card";
 import Spacer from "../ui/Spacer";
 import EvaluationItem from "./EvaluationItem";
+import axios from "axios";
+
+import { useSelector } from "react-redux";
+import { selectCurrentUser } from "../../redux/user/user.selectors";
+
 const MyEvaluationPage = () => {
-  const data = [
-    {
-      weekDate: "10/19/2021",
-      tasks: [
-        {
-          task: "Task 1: Eat alot of food",
-          completed: true,
-          secondary: "2 days left",
-        },
-        {
-          task: "Learn Redux",
-          completed: false,
-          secondary: "Redux is awesome",
-        },
-        { task: "Learn GraphQL", completed: false },
-      ],
-      avgRating: 6,
-      comments: [
-        {
-          comment: "Eat hot123123pothot123123pothot123123pothot123123pothot123123pothot123123pot",
-          rating: 1,
-        },
-        {
-          comment: "Eat ho12312312213tpot",
-          rating: 2,
-        },
-        {
-          comment: "Eat ho123123123123213tpot",
-          rating: 3,
-        },
-      ],
-    },
-    {
-      weekDate: "10/10/2021",
-      tasks: [
-        {
-          task: "Task 1: Eat alot of food",
-          completed: true,
-          secondary: "2 days left",
-        },
-        {
-          task: "Learn Redux",
-          completed: false,
-          secondary: "Redux is awesome",
-        },
-        { task: "Learn GraphQL", completed: false },
-      ],
-      avgRating: 4,
-      comments: [
-        {
-          comment: "Eat hotpot",
-          rating: 4,
-        },
-        {
-          comment: "Eat hotpot",
-          rating: 5,
-        },
-        {
-          comment: "Eat hotpot",
-          rating: 6,
-        },
-      ],
-    },
-    {
-      weekDate: "10/1/2021",
-      tasks: [
-        {
-          task: "Task 1: Eat alot of food",
-          completed: true,
-          secondary: "2 days left",
-        },
-        {
-          task: "Learn Redux",
-          completed: false,
-          secondary: "Redux is awesome",
-        },
-        { task: "Learn GraphQL", completed: false },
-      ],
-      avgRating: 1,
-      comments: [
-        {
-          comment: "Eat hotpot123",
-          rating: 7,
-        },
-        {
-          comment: "Eat hotpo444t",
-          rating: 8,
-        },
-        {
-          comment: "Eat hot123123pot",
-          rating: 10,
-        },
-      ],
-    },
-  ];
-  console.log(data);
+  const [myEvaluations, setmyEvaluations] = React.useState([]);
+
+  const { access } = useSelector(selectCurrentUser);
+
+  useEffect(() => {
+    const fetchMyEvaluationAsync = async () => {
+      axios
+        .get(`${process.env.REACT_APP_API_URL_API}/received_evals/`, {
+          headers: {
+            Authorization: `JWT ${access}`,
+          },
+        })
+        .then((res) => {
+          setmyEvaluations(res.data);
+        });
+    };
+    fetchMyEvaluationAsync();
+  }, [access]);
+
   return (
     <React.Fragment>
       <Grid
@@ -121,13 +49,12 @@ const MyEvaluationPage = () => {
             color="primary"
             sx={{ height: "70px", width: "70px" }}
           />
-          {data.map((item, index) => (
+          {myEvaluations.map((item, index) => (
             <EvaluationItem
               key={index}
-              weekDate={item.weekDate}
-              avgRating={item.avgRating}
+              weekDate={`Week ${item.week} ⏰${item.created_at}`}
               tasks={item.tasks}
-              comments={item.comments}
+              evaluations={item.evaluations}
             />
           ))}
         </Grid>

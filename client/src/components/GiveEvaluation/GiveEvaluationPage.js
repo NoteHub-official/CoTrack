@@ -22,50 +22,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const GiveEvaluationPage = () => {
-  // const receivedEvaluations = [
-  //   {
-  //     name: "Shina Mashiro",
-  //     date: "2021-01-01",
-  //     role: "Backend",
-  //     image: "https://i.pravatar.cc/120?img=1",
-  //   },
-  //   {
-  //     name: "Brian Yin",
-  //     date: "2021-01-01",
-  //     role: "Frontend",
-  //     image: "https://i.pravatar.cc/120?img=2",
-  //   },
-  //   {
-  //     name: "Allen Gao",
-  //     date: "2021-01-01",
-  //     role: "What the heck",
-  //     image: "https://i.pravatar.cc/120?img=3",
-  //   },
-  //   {
-  //     name: "Peiran Wnag",
-  //     date: "2021-01-01",
-  //     role: "What the heck",
-  //     image: "https://i.pravatar.cc/120?img=4",
-  //   },
-  //   {
-  //     name: "其德隆东墙",
-  //     date: "2021-01-01",
-  //     role: "What the heck",
-  //     image: "https://i.pravatar.cc/120?img=5",
-  //   },
-  //   {
-  //     name: "其德隆东a",
-  //     date: "2021-01-01",
-  //     role: "What the heck",
-  //     image: "https://i.pravatar.cc/120?img=5",
-  //   },
-  //   {
-  //     name: "其德隆东b",
-  //     date: "2021-01-01",
-  //     role: "What the heck",
-  //     image: "https://i.pravatar.cc/120?img=5",
-  //   },
-  // ];
   const [receivedEvaluations, setReceivedEvaluations] = React.useState([]);
 
   const [value, setValue] = React.useState(0);
@@ -74,12 +30,23 @@ const GiveEvaluationPage = () => {
 
   useEffect(() => {
     const fetchEvaluationAsync = async () => {
-      axios
-        .get(`${process.env.REACT_APP_API_URL_API}/assigned_evals/?week=${1}`, {
+      const response = await axios.get(
+        `${process.env.REACT_APP_API_URL_API}/current_week/`,
+        {
           headers: {
             Authorization: `JWT ${access}`,
           },
-        })
+        }
+      );
+      axios
+        .get(
+          `${process.env.REACT_APP_API_URL_API}/assigned_evals/?week=${response.data}`,
+          {
+            headers: {
+              Authorization: `JWT ${access}`,
+            },
+          }
+        )
         .then((res) => {
           setReceivedEvaluations(res.data);
         });
@@ -87,17 +54,28 @@ const GiveEvaluationPage = () => {
     fetchEvaluationAsync();
   }, [access]);
 
-  const setCompleted = (id) => {
+  const setCompleted = (id, rating, content) => {
     const newReceivedEvaluations = receivedEvaluations.map((evaluation) => {
       if (evaluation.id === id) {
-        return { ...evaluation, completed: true };
+        evaluation.completed = true;
+        evaluation.rating = rating;
+        evaluation.content = content;
       }
-      setReceivedEvaluations(newReceivedEvaluations);
+      return evaluation;
     });
+    setReceivedEvaluations(newReceivedEvaluations);
   };
-  
+
   const handleClick = (newValue) => {
     setValue(newValue);
+  };
+  const determineName = () => {
+    if (!receivedEvaluations[value]) {
+      return "Unknown";
+    }
+    return receivedEvaluations[value].evaluated_user.first_name
+      ? receivedEvaluations[value].evaluated_user.username
+      : receivedEvaluations[value].evaluated_user.username;
   };
 
   return (
@@ -114,19 +92,25 @@ const GiveEvaluationPage = () => {
           >
             {receivedEvaluations.map((evaluation, index) => {
               const {
-                evaluated_user: { username, role, image },
+                evaluated_user,
                 completed,
+
                 created_at,
               } = evaluation;
-
+              const { role, photo, username, first_name, last_name } =
+                evaluated_user;
               return (
                 <Grid item key={index}>
                   <AssignedEvaluationItem
                     index={index}
-                    name={username}
+                    name={
+                      first_name && last_name
+                        ? `${first_name} ${last_name}`
+                        : username
+                    }
                     date={created_at}
                     role={role}
-                    image={image}
+                    image={photo}
                     handleClick={handleClick}
                     completed={completed}
                   />
@@ -154,11 +138,7 @@ const GiveEvaluationPage = () => {
           initRating={
             receivedEvaluations[value] ? receivedEvaluations[value].rating : 0
           }
-          name={
-            receivedEvaluations[value]
-              ? receivedEvaluations[value].evaluated_user.username
-              : "Unknown"
-          }
+          name={determineName()}
           evaluationId={
             receivedEvaluations[value] ? receivedEvaluations[value].id : -1
           }

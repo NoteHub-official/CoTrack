@@ -2,8 +2,6 @@
 
 Team collaborative evaluation tracker.
 
-
-
 # API Reference
 
 ### Authentication
@@ -18,63 +16,61 @@ Team collaborative evaluation tracker.
 
 ##### 1. Login
 
-* **URL:** `auth/jwt/create/`
+- **URL:** `auth/jwt/create/`
 
-* **HTTP**: **POST**
-* **Login Required:** ***False***
+- **HTTP**: **POST**
+- **Login Required:** **_False_**
 
 Request Format:
 
 ```json
 {
-    "username": "test",
-    "password": "123456"
+  "username": "test",
+  "password": "123456"
 }
 ```
 
-Response Format (use ***Access token***):
+Response Format (use **_Access token_**):
 
 ```json
 {
-    "refresh": "...J0eXAiOiJKV1QiL...",
-    "access": "...J0eXAiOiJKV1QiL..."
+  "refresh": "...J0eXAiOiJKV1QiL...",
+  "access": "...J0eXAiOiJKV1QiL..."
 }
 ```
 
 ##### 1. Update User Information
 
-* **URL:** `auth/users/me/`
+- **URL:** `auth/users/me/`
 
-* **HTTP**: **PATCH**
-* **Login Required:** ***True***
+- **HTTP**: **PATCH**
+- **Login Required:** **_True_**
 
 Request Format:
 
 ```json
 {
-    "first_name": "Brian", // Optional
-    "last_name": "Yin"     // Optional
+  "first_name": "Brian", // Optional
+  "last_name": "Yin" // Optional
 }
 ```
-
-
 
 ### Evaluation
 
 ##### 1. Assign a new evaluation for user (Do not use this unless unexpected things happen!)
 
-* **URL:** `api/assigned_evals/`
+- **URL:** `api/assigned_evals/`
 
-* **HTTP**: **POST**
-* **Login Required:** ***True***
+- **HTTP**: **POST**
+- **Login Required:** **_True_**
 
 Request Format:
 
 ```json
 {
-    "week": 1,
-    "content": "Hi there!",
-    "evaluated_user": 3
+  "week": 1,
+  "content": "Hi there!",
+  "evaluated_user": 3
 }
 ```
 
@@ -82,21 +78,19 @@ Response Format:
 
 ```json
 {
-    "week": 1,
-    "content": "Hi there!",
-    "evaluated_user": 3,
-    "completed": false
+  "week": 1,
+  "content": "Hi there!",
+  "evaluated_user": 3,
+  "completed": false
 }
 ```
 
-
-
 ##### 2. Get assigned evaluations for a user by week
 
-* **URL:** `api/assigned_evals/?week=<int:week>`
+- **URL:** `api/assigned_evals/?week=<int:week>`
 
-* **HTTP**: **GET**
-* **Login Required:** ***True***
+- **HTTP**: **GET**
+- **Login Required:** **_True_**
 
 Response Format:
 
@@ -110,7 +104,9 @@ Response Format:
     "evaluated_user": {
       "id": 3,
       "username": "BBB",
-      "email": ""
+      "email": "",
+      "role":  "backend developer",
+      "photo": "http://localhost:3000"
     },
     "created_at": "2021-12-04",
     "completed": false,
@@ -134,21 +130,19 @@ Response Format:
 ]
 ```
 
-
-
 ##### 3. Edit evaluation content & rating
 
-* **URL:** `api/assigned_evals/<evaluation_pk>/`
+- **URL:** `api/assigned_evals/<evaluation_pk>/`
 
-* **HTTP**: **PATCH**
-* **Login Required:** ***True***
+- **HTTP**: **PATCH**
+- **Login Required:** **_True_**
 
 Request Format:
 
 ```json
 {
-    "content": "Updated Content", // Optional
-    "rating": 9 									// Optional
+  "content": "Updated Content", // Optional
+  "rating": 9 // Optional
 }
 ```
 
@@ -156,20 +150,18 @@ Response Format:
 
 ```json
 {
-    "content": "Updated Content",
-    "rating": 9,
-  	"completed": true
+  "content": "Updated Content",
+  "rating": 9,
+  "completed": true
 }
 ```
 
+##### 4. Get all received evaluations
 
+- **URL:** `api/received_evals/`
 
-##### 4. Get all received evaluations 
-
-* **URL:** `api/received_evals/`
-
-* **HTTP**: **GET**
-* **Login Required:** ***True***
+- **HTTP**: **GET**
+- **Login Required:** **_True_**
 
 Response Format (**GROUP BY task_list ORDER BY week DESC**):
 
@@ -224,25 +216,23 @@ Response Format (**GROUP BY task_list ORDER BY week DESC**):
 ]
 ```
 
-
-
 ---
 
 ### TaskItem
 
 ##### 1. Add a new Task Item to a task list
 
-* **URL:** `api/task_items/`
+- **URL:** `api/task_items/`
 
-* **HTTP**: **POST**
-* **Login Required:** ***True***
+- **HTTP**: **POST**
+- **Login Required:** **_True_**
 
 Request Format:
 
 ```json
 {
-    "task_list": 1,
-    "content": "Hello there!"
+  "task_list": 1,
+  "content": "Hello there!"
 }
 ```
 
@@ -250,26 +240,24 @@ Reponse Format:
 
 ```json
 {
-    "task_list": 1,
-    "content": "Hello there!"
+  "task_list": 1,
+  "content": "Hello there!"
 }
 ```
 
-
-
 ##### 2. Modify an existing Task Item
 
-* **URL:** `api/task_items/<task_item_pk>/`
+- **URL:** `api/task_items/<task_item_pk>/`
 
-* **HTTP**: **PATCH**
-* **Login Required:** ***True***
+- **HTTP**: **PATCH**
+- **Login Required:** **_True_**
 
 Request Format:
 
 ```json
 {
-    "content": "Modified task Item",  // Optional
-    "completed": false								// Optional
+  "content": "Modified task Item", // Optional
+  "completed": false // Optional
 }
 ```
 
@@ -277,22 +265,27 @@ Response Format:
 
 ```json
 {
-    "id": 1,
-    "content": "Modified task Item",
-  	"completed": false	
+  "id": 1,
+  "content": "Modified task Item",
+  "completed": false
 }
 ```
 
+##### 3. Delete an existing Task Item
 
+- **URL:** `api/task_items/<task_item_pk>/`
+
+- **HTTP**: **DELETE**
+- **Login Required:** **_True_**
 
 ### Week
 
 ##### Modify an existing Task Item
 
-* **URL:** `api/current_week/`
+- **URL:** `api/current_week/`
 
-* **HTTP**: **GET**
-* **Login Required:** ***True***
+- **HTTP**: **GET**
+- **Login Required:** **_True_**
 
 Response Format:
 
@@ -301,8 +294,3 @@ Response Format:
   "week": 1
 }
 ```
-
-
-
-
-

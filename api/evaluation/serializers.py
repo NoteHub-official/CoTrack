@@ -9,7 +9,7 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('id', 'username', 'email', 'password', 'role', 'photo')
+        fields = ('id', 'username','first_name', 'last_name', 'email', 'password', 'role', 'photo')
         extra_kwargs = {'password': {'write_only': True}}
 
 
@@ -27,7 +27,7 @@ class AddTaskItemSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = TaskItem
-        fields = ('task_list', 'content', 'subcontent')
+        fields = ('id','task_list', 'content', 'subcontent')
 
 
 """

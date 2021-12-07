@@ -19,9 +19,22 @@ function App() {
       <BrowserRouter>
         <Header value={value} setValue={setValue} />
         <Routes>
-          <Route path="/" element={<LandingPage />} />
-          <Route path="/give" element={<GiveEvaluationPage />} />
-          <Route path="/me" element={<MyEvaluationPage />} />
+          <Route
+            path="/"
+            element={currentUser ? <LandingPage /> : <Navigate to="/login" />}
+          />
+          <Route
+            path="/give"
+            element={
+              currentUser ? <GiveEvaluationPage /> : <Navigate to="/login" />
+            }
+          />
+          <Route
+            path="/me"
+            element={
+              currentUser ? <MyEvaluationPage /> : <Navigate to="/login" />
+            }
+          />
           <Route
             path="/login"
             element={currentUser ? <Navigate to="/" /> : <LoginPage />}

@@ -1,5 +1,5 @@
 import TodoList from "../Todo/TodoList";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
@@ -7,23 +7,54 @@ import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
 import Button from "@mui/material/Button";
 import { useDispatch } from "react-redux";
-const LandingPage = () => {
-  const todos = [
-    {
-      task: "Learn Do I need to take CS 361 as I already have MATH461? Can I take other advanced composition class other than those in CS major? Learn Do I need to take CS 361 as I already have MATH461? Can I take other advanced composition class other than those in CS major? Learn Do I need to take CS 361 as I already have MATH461? Can I take other advanced composition class other than those in CS major? Learn Do I need to take CS 361 as I already have MATH461? Can I take other advanced composition class other than those in CS major?",
-      completed: true,
-      secondary: "2 days left",
-    },
-    { task: "Learn Redux", completed: false, secondary: "Redux is awesome" },
-    { task: "Learn GraphQL", completed: false },
-  ];
-  const weekNumber = 1;
-  const [newTask, setNewTask] = useState(0);
-  const dispatch = useDispatch();
+import { useSelector } from "react-redux";
+import { selectCurrentUser } from "../../redux/user/user.selectors";
+import axios from "axios";
+import { Navigate } from "react-router-dom";
 
+const LandingPage = () => {
+  const [weekNumber, setWeekNumber] = useState(0);
+  const [newTask, setNewTask] = useState(0);
+  const [tasks, setTasks] = useState([]);
+  const [taskListId, setTaskListId] = useState(0);
   const addNewTask = (e) => {
     setNewTask(1);
   };
+
+  const { access } = useSelector(selectCurrentUser);
+
+  useEffect(() => {
+    const fetchTasksAsync = async () => {
+      const { data } = await axios.get(
+        `${process.env.REACT_APP_API_URL_API}/current_week/`,
+        {
+          headers: {
+            Authorization: `JWT ${access}`,
+          },
+        }
+      );
+      setWeekNumber(data);
+
+      await axios
+        .get(`${process.env.REACT_APP_API_URL_API}/received_evals/`, {
+          headers: {
+            Authorization: `JWT ${access}`,
+          },
+        })
+        .then((res) => {
+          const currentWeekEvaluations = res.data.filter((item) => {
+            return item.week === data;
+          }); //data is the week we just fetched
+          if (currentWeekEvaluations) {
+            const { tasks, id } = currentWeekEvaluations[0];
+            setTasks(tasks);
+            setTaskListId(id);
+          }
+        });
+    };
+    fetchTasksAsync();
+  }, [access]);
+
   return (
     <Grid
       sx={{ margin: "auto" }}
@@ -43,7 +74,13 @@ const LandingPage = () => {
         </Grid>
         <Divider />
         <Grid item>
-          <TodoList todos={todos} newTask={newTask} setNewTask={setNewTask} />
+          <TodoList
+            todos={tasks}
+            setTasks={setTasks}
+            newTask={newTask}
+            setNewTask={setNewTask}
+            taskListId={taskListId}
+          />
         </Grid>
       </Paper>
       <Grid item>

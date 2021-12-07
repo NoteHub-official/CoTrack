@@ -10,10 +10,11 @@ import ThumbDownOffAltIcon from "@mui/icons-material/ThumbDownOffAlt";
 import TodoList from "../Todo/TodoList";
 import Paper from "@mui/material/Paper";
 import Divider from "@mui/material/Divider";
+
+import Snackbar from "../../components/ui/CustomizedSnackbar";
 import { useSelector } from "react-redux";
 import { selectCurrentUser } from "../../redux/user/user.selectors";
 import axios from "axios";
-
 const EvaluationForm = (props) => {
   const {
     initContent,
@@ -26,6 +27,12 @@ const EvaluationForm = (props) => {
   const [content, setContent] = useState("");
   const [rating, setRating] = useState(0);
   const { access } = useSelector(selectCurrentUser);
+  const { tasks } = taskList;
+  const [snackbar, setSnackbar] = useState({
+    open: false,
+    message: "",
+    severity: "success",
+  });
 
   const patchEvaluationAsync = async () => {
     axios
@@ -48,8 +55,13 @@ const EvaluationForm = (props) => {
   };
 
   const handleCompleteSuccess = () => {
-    setCompleted(evaluationId);
+    setCompleted(evaluationId, rating, content);
     patchEvaluationAsync();
+    setSnackbar({
+      message: "Evaluation Save Success, Thank you for your feedback!",
+      open: true,
+      severity: "success",
+    });
   };
 
   useEffect(() => {
@@ -102,7 +114,12 @@ const EvaluationForm = (props) => {
               justifyContent="center"
             >
               <Grid item>
-                <TodoList readOnly todos={taskList} assignmentIcon />
+                <TodoList
+                  readOnly
+                  disableSubcontent
+                  todos={tasks}
+                  assignmentIcon
+                />
               </Grid>
             </Grid>
           </Paper>
@@ -175,6 +192,12 @@ const EvaluationForm = (props) => {
           </Box>
         </Grid>
       </Grid>
+      <Snackbar
+        open={snackbar.open}
+        setSnackbar={setSnackbar}
+        severity={snackbar.severity}
+        message={snackbar.message}
+      />
     </React.Fragment>
   );
 };
