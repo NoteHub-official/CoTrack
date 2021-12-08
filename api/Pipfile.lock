@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "0a1ac471c45cb0a0c511935dc71ab0002dfe3053c6239282e6fe436aa8e072cb"
+            "sha256": "d06d05099c4d4b37855a8bfe7c749d4d9ec6028d6bd3bed246de039d4e1a8d39"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -374,6 +374,14 @@
             ],
             "version": "==3.2.0"
         },
+        "pytz": {
+            "hashes": [
+                "sha256:3672058bc3453457b622aab7a1c3bfd5ab0bdae451512f6cf25f64ed37f5b87c",
+                "sha256:acad2d8b20a1af07d4e4c9d2e9285c5ed9104354062f275f3fcd88dcef4f1326"
+            ],
+            "index": "pypi",
+            "version": "==2021.3"
+        },
         "requests": {
             "hashes": [
                 "sha256:6c1246513ecd5ecd4528a0906f910e8f0f9c6b8ec72030dc9fd154dc1a6efd24",
@@ -395,7 +403,7 @@
                 "sha256:1e61c37477a1626458e36f7b1d82aa5c9b094fa4802892072e49de9c60c4c926",
                 "sha256:8abb2f1d86890a2dfb989f9a77cfcfd3e47c2a354b01111771326f8aa26e0254"
             ],
-            "markers": "python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3'",
+            "markers": "python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2'",
             "version": "==1.16.0"
         },
         "social-auth-app-django": {
