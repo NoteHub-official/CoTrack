@@ -88,7 +88,7 @@ STATICFILES_DIRS = (
 )
 
 
-STATIC_ROOT = os.path.join(BASE_DIR,"..", 'client', "build", "static")
+#STATIC_ROOT = os.path.join(BASE_DIR,"..", 'client', "build", "static")
 
 WSGI_APPLICATION = 'cotrack.wsgi.application'
 
