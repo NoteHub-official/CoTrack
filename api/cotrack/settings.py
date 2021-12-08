@@ -84,7 +84,7 @@ TEMPLATES = [
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = (
-    os.path.join(BASE_DIR,"..", 'client', "build", "static"),  # update the STATICFILES_DIRS
+    os.path.join(BASE_DIR, "build", "static"),  # update the STATICFILES_DIRS
 )
 
 
