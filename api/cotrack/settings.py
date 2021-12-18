@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-jw(&=#0%18=)04^6#bl8n604%de2wv3d)tm&j1cw(%#k!&)cdd
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["localhost","http://localhost:3000", "https://cotracker.web.illinois.edu"]
+ALLOWED_HOSTS = ["localhost","http://localhost:3000", "http://localhost:3001", "https://cotracker.web.illinois.edu"]
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
@@ -67,9 +67,9 @@ ROOT_URLCONF = 'cotrack.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, "build")]  
+        'DIRS': [os.path.join(BASE_DIR, "build")]
         ,
-        'APP_DIRS': True,   
+        'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',
@@ -98,8 +98,12 @@ WSGI_APPLICATION = 'cotrack.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'Cotrack',
+        'USER': 'postgres',
+        'PASSWORD': '12345678',
+        'HOST': 'localhost',
+        'PORT': '5432',
     }
 }
 

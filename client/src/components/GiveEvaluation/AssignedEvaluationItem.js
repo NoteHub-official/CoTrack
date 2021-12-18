@@ -42,17 +42,31 @@ export default function AssignedEvaluationItem(props) {
     <Paper sx={{ p: 2, maxWidth: 500, flexGrow: 1 }} elevation={0}>
       <Grid container spacing={2} direction="row" justifyContent="center">
         <Grid item>
-          <Img alt="complex" src={image} sx={{ borderRadius: 50, width: 80 }} />
+          {image ? (
+            <Img alt="complex" src={image} sx={{ borderRadius: 50, width: 80 }} />
+          ) : (
+            <div
+              style={{
+                width: 40,
+                height: 40,
+                backgroundColor: "#1fb6ff",
+                borderRadius: "50%",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <Typography variant="h6" color="white">
+                {name[0].toUpperCase()}
+              </Typography>
+            </div>
+          )}
         </Grid>
         <Grid item xs={12} sm container>
           <Grid item xs>
             <Grid item container xs>
               <Grid item>
-                <Typography
-                  gutterBottom
-                  variant="subtitle1"
-                  className={classes.typography}
-                >
+                <Typography gutterBottom variant="subtitle1" className={classes.typography}>
                   {name}
                 </Typography>
               </Grid>
@@ -77,21 +91,11 @@ export default function AssignedEvaluationItem(props) {
             >
               <Grid item>
                 {completed ? (
-                  <Typography
-                    gutterBottom
-                    variant="subtitle1"
-                    color="green"
-                    align="center"
-                  >
+                  <Typography gutterBottom variant="subtitle1" color="green" align="center">
                     Completed
                   </Typography>
                 ) : (
-                  <Typography
-                    gutterBottom
-                    variant="subtitle1"
-                    color="red"
-                    align="center"
-                  >
+                  <Typography gutterBottom variant="subtitle1" color="red" align="center">
                     Incompleted
                   </Typography>
                 )}

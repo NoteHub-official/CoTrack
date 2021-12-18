@@ -25,14 +25,11 @@ const LandingPage = () => {
 
   useEffect(() => {
     const fetchTasksAsync = async () => {
-      const { data } = await axios.get(
-        `${process.env.REACT_APP_API_URL_API}/current_week/`,
-        {
-          headers: {
-            Authorization: `JWT ${access}`,
-          },
-        }
-      );
+      const { data } = await axios.get(`${process.env.REACT_APP_API_URL_API}/current_week/`, {
+        headers: {
+          Authorization: `JWT ${access}`,
+        },
+      });
       setWeekNumber(data);
 
       await axios
@@ -45,7 +42,7 @@ const LandingPage = () => {
           const currentWeekEvaluations = res.data.filter((item) => {
             return item.week === data;
           }); //data is the week we just fetched
-          if (currentWeekEvaluations) {
+          if (currentWeekEvaluations.length > 0) {
             const { tasks, id } = currentWeekEvaluations[0];
             setTasks(tasks);
             setTaskListId(id);
