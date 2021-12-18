@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-jw(&=#0%18=)04^6#bl8n604%de2wv3d)tm&j1cw(%#k!&)cdd
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["localhost","http://localhost:3000", "http://localhost:3001", "https://cotracker.web.illinois.edu"]
+ALLOWED_HOSTS = ["localhost","http://localhost:3000", "http://localhost:3001", "https://cotrack-test.herokuapp.com/"]
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
