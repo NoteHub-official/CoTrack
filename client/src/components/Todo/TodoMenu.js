@@ -8,7 +8,7 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
 import SpeakerNotesIcon from "@mui/icons-material/SpeakerNotes";
 import Cloud from "@mui/icons-material/Cloud";
-
+import { useNavigate } from "react-router-dom";
 export default function TodoMenu(props) {
   const { anchorEl, open, handleClose, setEditValue } = props;
 
@@ -19,6 +19,15 @@ export default function TodoMenu(props) {
       setEditValue(2);
     }
     handleClose();
+  };
+
+  let navigate = useNavigate();
+  const handleClickRedirect = (event) => {
+    //redirect to https://mynotehub.illinois.edu
+    //prevent default
+    event.preventDefault();
+    window.location.href = 'https://mynotehub.web.illinois.edu';
+    return null;
   };
   return (
     <Menu sx={{ width: 320, maxWidth: "100%" }} anchorEl={anchorEl} open={open}>
@@ -37,7 +46,7 @@ export default function TodoMenu(props) {
         </MenuItem>
 
         <Divider />
-        <MenuItem>
+        <MenuItem onClick={handleClickRedirect}>
           <ListItemIcon>
             <Cloud fontSize="small" />
           </ListItemIcon>
