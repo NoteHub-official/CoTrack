@@ -16,14 +16,7 @@ import { useSelector } from "react-redux";
 import { selectCurrentUser } from "../../redux/user/user.selectors";
 import axios from "axios";
 const EvaluationForm = (props) => {
-  const {
-    initContent,
-    name,
-    initRating,
-    taskList,
-    evaluationId,
-    setCompleted,
-  } = props;
+  const { initContent, name, initRating, taskList, evaluationId, setCompleted } = props;
   const [content, setContent] = useState("");
   const [rating, setRating] = useState(0);
   const { access } = useSelector(selectCurrentUser);
@@ -79,28 +72,13 @@ const EvaluationForm = (props) => {
         sx={{ width: "100%" }}
       >
         <Grid item sx={{ minWidth: 500 }}>
-          <Grid
-            container
-            alignItems="center"
-            justifyContent="center"
-            sx={{ mb: 2 }}
-          >
-            <ThumbUpOffAltIcon
-              color="primary"
-              sx={{ height: "70px", width: "70px" }}
-            />
-            <ThumbDownOffAltIcon
-              color="secondary"
-              sx={{ height: "70px", width: "70px" }}
-            />
+          <Grid container alignItems="center" justifyContent="center" sx={{ mb: 2 }}>
+            <ThumbUpOffAltIcon color="primary" sx={{ height: "70px", width: "70px" }} />
+            <ThumbDownOffAltIcon color="secondary" sx={{ height: "70px", width: "70px" }} />
           </Grid>
 
           <Paper elevation={3} sx={{ width: "100%", mb: 5 }}>
-            <Typography
-              component="div"
-              align="left"
-              sx={{ padding: 2, fontSize: "1.2em" }}
-            >
+            <Typography component="div" align="left" sx={{ padding: 2, fontSize: "1.2em" }}>
               This week, {name} worked on following tasks:
             </Typography>
             <Divider />
@@ -114,22 +92,13 @@ const EvaluationForm = (props) => {
               justifyContent="center"
             >
               <Grid item>
-                <TodoList
-                  readOnly
-                  disableSubcontent
-                  todos={tasks}
-                  assignmentIcon
-                />
+                <TodoList readOnly disableSubcontent todos={tasks} assignmentIcon />
               </Grid>
             </Grid>
           </Paper>
 
           <Paper elevation={3} sx={{ width: "100%", mb: 5 }}>
-            <Typography
-              component="div"
-              align="left"
-              sx={{ padding: 2, fontSize: "1.2em" }}
-            >
+            <Typography component="div" align="left" sx={{ padding: 2, fontSize: "1.2em" }}>
               Do you like to work with {name} ?
             </Typography>
             <Divider />
@@ -146,11 +115,7 @@ const EvaluationForm = (props) => {
           </Paper>
 
           <Paper elevation={3} sx={{ width: "100%" }}>
-            <Typography
-              component="div"
-              align="left"
-              sx={{ padding: 2, fontSize: "1.2em" }}
-            >
+            <Typography component="div" align="left" sx={{ padding: 2, fontSize: "1.2em" }}>
               Do you have any comments for {name}?
             </Typography>
             <Grid
@@ -182,11 +147,7 @@ const EvaluationForm = (props) => {
               padding: 5,
             }}
           >
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={handleCompleteSuccess}
-            >
+            <Button variant="contained" color="primary" onClick={handleCompleteSuccess}>
               Save
             </Button>
           </Box>

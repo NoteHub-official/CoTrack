@@ -26,7 +26,6 @@ export const setAuthTokens = (tokenAndRefresh) => ({
 
 export const signInAsync = (username, password) => {
   return (dispatch) => {
-
     axios
       .post(`${process.env.REACT_APP_API_URL_AUTH}/jwt/create/`, {
         username,
@@ -38,5 +37,23 @@ export const signInAsync = (username, password) => {
       .catch((err) => {
         dispatch(signInFailure(err.message));
       });
+  };
+};
+
+export const resetPasswordInAsync = (password, newPassword, access) => {
+  return (dispatch) => {
+    console.log(access);
+    axios.post(
+      `${process.env.REACT_APP_API_URL_AUTH}/users/set_password/`,
+      {
+        current_password: password,
+        new_password: newPassword,
+      },
+      {
+        headers: {
+          Authorization: `JWT ${access}`,
+        },
+      }
+    );
   };
 };
