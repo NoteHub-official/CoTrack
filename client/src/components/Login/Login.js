@@ -20,10 +20,26 @@ export default function AuthPage(props) {
 
   const dispatch = useDispatch();
 
+
+  const tempHandleLogin(username, password){
+    axios
+      .post(`${process.env.REACT_APP_API_URL_AUTH}/jwt/create/`, {
+        username,
+        password,
+      })
+      .then((res) => {
+        return res.access;
+      })
+      .catch((err) => {
+        throw new Error(err.message);
+      });
+  }
+
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await dispatch(signInAsync(userName, password));
+      const access = await tempHandleLogin(userName, password);
       if (!login) await dispatch(resetPasswordInAsync(password, newPassword, access));
     } catch (e) {
       console.log(e.message);
