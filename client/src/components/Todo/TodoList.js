@@ -61,7 +61,7 @@ const TodoList = (props) => {
             <TodoItem
               readOnly={readOnly}
               disableSubcontent={disableSubcontent}
-              key={index}
+              key={todo.id}
               showComplete={showComplete}
               todo={{ index, ...todo }}
               handleOnUpdate={handleOnUpdate}
