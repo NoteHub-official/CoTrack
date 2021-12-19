@@ -4,9 +4,8 @@ import logo from "../../static/logo_transparent.png";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
-import { useSelector } from "react-redux";
-import { selectCurrentUser } from "../../redux/user/user.selectors";
-
+import axios from "axios";
+import { Navigate } from "react-router-dom";
 import { signInAsync, resetPasswordInAsync } from "../../redux/user/user.actions";
 import { useDispatch } from "react-redux";
 
@@ -15,32 +14,32 @@ export default function AuthPage(props) {
   const [password, setPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [login, setLogin] = useState(true);
-  const obj = useSelector(selectCurrentUser);
-  const access = obj ? obj.access : "";
 
   const dispatch = useDispatch();
 
-
-  const tempHandleLogin(username, password){
-    axios
+  const tempHandleLogin = async (username, password) => {
+    return axios
       .post(`${process.env.REACT_APP_API_URL_AUTH}/jwt/create/`, {
         username,
         password,
       })
       .then((res) => {
-        return res.access;
+        return res.data.access;
       })
       .catch((err) => {
         throw new Error(err.message);
       });
-  }
-
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const access = await tempHandleLogin(userName, password);
-      if (!login) await dispatch(resetPasswordInAsync(password, newPassword, access));
+      dispatch(signInAsync(userName, password));
+      if (!login) {
+        const access = await tempHandleLogin(userName, password);
+        dispatch(resetPasswordInAsync(password, newPassword, access));
+        return <Navigate to="/" />;
+      }
     } catch (e) {
       console.log(e.message);
     }
@@ -52,7 +51,7 @@ export default function AuthPage(props) {
     }
   };
 
-  const authText = login ? "Login" : "Signup";
+  const authText = login ? "Login" : "Reset Password";
 
   return (
     <React.Fragment>
